@@ -43,6 +43,7 @@ const register = async (req, res) => {
     });
 
     await user.save();
+    // AuthHelper.Auth.toAuthJSON(user)
 
     return res.status(201).json({
       status: 201,
@@ -58,4 +59,4 @@ const register = async (req, res) => {
 };
 
 
-module.exports = { register, login };
+module.exports = { register };
