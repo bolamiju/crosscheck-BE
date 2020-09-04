@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs');
-const validation = require('./user.validation');
-const Users = require('./users.model');
-const AuthHelper = require('./auth');
+const bcrypt = require("bcryptjs");
+const validation = require("./user.validation");
+const Users = require("./users.model");
+const AuthHelper = require("./auth");
 
 const { genSaltSync, hashSync } = bcrypt;
 
@@ -16,15 +16,23 @@ const register = async (req, res) => {
       });
     }
 
-
-    const { firstName, lastName, email, phone,country,organizationName, password } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      country,
+      organizationName,
+      password,
+      userType,
+    } = req.body;
 
     const userExist = await Users.findOne({ email });
 
     if (userExist) {
       return res.status(409).json({
         status: 409,
-        message: 'user already exist',
+        message: "user already exist",
       });
     }
 
@@ -39,6 +47,7 @@ const register = async (req, res) => {
       lastName,
       email,
       country,
+      userType,
       password: hash,
     });
 
@@ -47,7 +56,7 @@ const register = async (req, res) => {
 
     return res.status(201).json({
       status: 201,
-      message: 'User created successfully',
+      message: "User created successfully",
       user: AuthHelper.Auth.toAuthJSON(user),
     });
   } catch (error) {
@@ -57,7 +66,6 @@ const register = async (req, res) => {
     });
   }
 };
-
 
 const login = async (req, res) => {
   try {
@@ -77,28 +85,30 @@ const login = async (req, res) => {
     if (!existingUser) {
       return res.status(400).json({
         status: 400,
-        message: 'Invalid email or password',
+        message: "Invalid email or password",
       });
     }
 
-    const userPassword = await bcrypt.compareSync(password, existingUser.password);
+    const userPassword = await bcrypt.compareSync(
+      password,
+      existingUser.password
+    );
 
     if (!userPassword) {
       return res.status(400).json({
-        message: 'invalid email or password',
+        message: "invalid email or password",
       });
     }
 
     return res.status(200).json({
-      message: 'Logged in successfully',
+      message: "Logged in successfully",
       user: AuthHelper.Auth.toAuthJSON(existingUser),
     });
   } catch (error) {
     return res.status(500).json({
-      message: error.message || 'Could not login user',
+      message: error.message || "Could not login user",
     });
   }
 };
 
-
-module.exports = { register,login };
+module.exports = { register, login };
