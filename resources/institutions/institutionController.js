@@ -46,4 +46,25 @@ const addInstitution = async (req, res) => {
   }
 };
 
-module.exports = { addInstitution };
+const getAllInstitutions = (req, res) => {
+  try {
+    Institution.find({}, (err, institution) => {
+      if (institution.length === 0) {
+        return res.status(404).json({
+          message: "no institution found",
+        });
+      }
+
+      return res.status(200).json({
+        message: `${institution.length} institution(s) found`,
+        institution,
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
+module.exports = { addInstitution, getAllInstitutions };
