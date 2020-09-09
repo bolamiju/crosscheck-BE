@@ -28,6 +28,33 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
+const accountActivationToken = async (req, res, next) => {
+  const { token } = req.params;
+
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  try {
+    const { id } = await jwt.verify(token, process.env.SECRET_KEY);
+
+    const user = await UserModel.findOne({ _id: id });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "invalid token provided",
+      });
+    }
+
+    req.userId = id;
+    return next();
+  } catch (error) {
+    return res.status(500).json({
+      error: error || "see Something went wrong",
+    });
+  }
+};
+
 const validateAdmin = async (req, res, next) => {
   const token = req.headers.authorization;
 
@@ -50,4 +77,4 @@ const validateAdmin = async (req, res, next) => {
   }
 };
 
-module.exports = { verifyToken, validateAdmin };
+module.exports = { verifyToken, validateAdmin, accountActivationToken };
