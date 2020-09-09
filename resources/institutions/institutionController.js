@@ -67,4 +67,79 @@ const getAllInstitutions = (req, res) => {
   }
 };
 
-module.exports = { addInstitution, getAllInstitutions };
+const editInstitutionInfo = async (req, res) => {
+  const updateparamters = req.body;
+  const { name } = req.params;
+  console.log("params", req.params);
+  try {
+    const institution = await Institution.findOne({ name }, function (
+      err,
+      result
+    ) {
+      if (!result) {
+        return res.send(404).json({
+          message: "Institution not found",
+        });
+      }
+    });
+
+    if (!institution) {
+      return res.status(404).json({
+        message: "Institution not found",
+      });
+    }
+    console.log(institution);
+    const updatedInstitution = await Institution.updateOne(
+      { name },
+      { $set: updateparamters }
+    );
+    if (updatedInstitution) {
+      return res.status(200).json({
+        message: "Institution updated",
+        university: updatedInstitution,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
+const deleteInstitution = (req, res) => {
+  const { _id } = req.params;
+  console.log(_id);
+  Institution.findOne({ _id }, (err, institution) => {
+    if (err) {
+      return res.status(500).json({
+        message: err,
+      });
+    }
+    if (!institution) {
+      return res.status(404).json({
+        message: "institution not found",
+      });
+    }
+
+    Institution.deleteOne({ _id }, (error, result) => {
+      if (error) {
+        return res.status(500).json({
+          message: error,
+        });
+      }
+
+      if (result) {
+        return res.status(200).json({
+          message: "institution deleted successfully",
+        });
+      }
+    });
+  });
+};
+
+module.exports = {
+  addInstitution,
+  getAllInstitutions,
+  editInstitutionInfo,
+  deleteInstitution,
+};

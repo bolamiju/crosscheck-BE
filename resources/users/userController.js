@@ -1,4 +1,6 @@
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const nodeMailerSendgrid = require("nodemailer-sendgrid");
 const validation = require("./user.validation");
 const Users = require("./users.model");
 const AuthHelper = require("./auth");
@@ -52,17 +54,66 @@ const register = async (req, res) => {
     });
 
     await user.save();
-    // AuthHelper.Auth.toAuthJSON(user)
+    const userDetails = AuthHelper.Auth.toAuthJSON(user);
 
-    return res.status(201).json({
-      status: 201,
-      message: "User created successfully",
-      user: AuthHelper.Auth.toAuthJSON(user),
+    const transporter = nodemailer.createTransport(
+      nodeMailerSendgrid({
+        apiKey: process.env.SENDGRID_API_KEY,
+      })
+    );
+
+    const mailOptions = {
+      from: "CrossCheck",
+      to: `${email}`,
+      subject: "Account activation",
+      html: `
+      <div>Hi ${firstName}, <br> Please click on 
+      <a href="https://croscheck.herokuapp.com/api/v1/users/${userDetails.token}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.send(error);
+      } else {
+        return res.status(201).json({
+          message: "Please check your email for an activation link",
+        });
+      }
     });
   } catch (error) {
     return res.status(500).json({
       status: 500,
       error,
+    });
+  }
+};
+
+const verifyAccount = async (req, res) => {
+  // const { status } = req.params;
+  const updateparamters = req.body;
+  console.log("params", req.params);
+  const { userId } = req;
+  try {
+    await Users.findOne({ _id: userId }, function (err, result) {
+      if (!result) {
+        return res.send(404).json({
+          message: "user not found",
+        });
+      }
+    });
+    const confirmUser = await Users.updateOne(
+      { _id: userId },
+      { $set: updateparamters }
+    );
+    if (confirmUser) {
+      return res.status(200).json({
+        message: "user account activated",
+        user: confirmUser,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
     });
   }
 };
@@ -89,6 +140,13 @@ const login = async (req, res) => {
       });
     }
 
+    if (existingUser && existingUser.confirmed === false) {
+      return res.status(400).json({
+        status: 400,
+        message: "Account not activated",
+      });
+    }
+
     const userPassword = await bcrypt.compareSync(
       password,
       existingUser.password
@@ -111,4 +169,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+module.exports = { register, login, verifyAccount };

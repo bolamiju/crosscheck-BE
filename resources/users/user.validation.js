@@ -5,7 +5,7 @@ module.exports = {
     const schema = {
       firstName: Joi.string().min(2).max(50).required(),
       lastName: Joi.string().min(2).max(50).required(),
-      organizationName: Joi.string().min(2).max(50).required(),
+      organizationName: Joi.string().min(2).max(50),
       email: Joi.string().required().email(),
       country: Joi.string().required(),
       phone: Joi.string().min(7).max(11).required(),
