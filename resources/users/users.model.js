@@ -55,6 +55,18 @@ const UserSchema = Schema({
     minlength: 6,
     maxlength: 80,
   },
+  accountType: {
+    type: String,
+    required: false,
+    minlength: 8,
+    maxlength: 14,
+  },
+  companyWebsite: {
+    type: String,
+    required: false,
+    minlength: 8,
+    maxlength: 14,
+  },
 });
 
 const UserModel = mongoose.model("User", UserSchema);
