@@ -47,7 +47,7 @@ const UserSchema = Schema({
   },
   confirmed: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   password: {
     type: String,
@@ -65,7 +65,7 @@ const UserSchema = Schema({
     type: String,
     required: false,
     minlength: 8,
-    maxlength: 14,
+    maxlength: 50,
   },
 });
 
