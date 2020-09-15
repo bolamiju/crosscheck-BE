@@ -27,6 +27,8 @@ const register = async (req, res) => {
       organizationName,
       password,
       userType,
+      companyWebsite,
+      accountType,
     } = req.body;
 
     const userExist = await Users.findOne({ email });
@@ -49,6 +51,8 @@ const register = async (req, res) => {
       lastName,
       email,
       country,
+      companyWebsite,
+      accountType,
       userType,
       password: hash,
     });
@@ -56,29 +60,33 @@ const register = async (req, res) => {
     await user.save();
     const userDetails = AuthHelper.Auth.toAuthJSON(user);
 
-    const transporter = nodemailer.createTransport(
-      nodeMailerSendgrid({
-        apiKey: process.env.SENDGRID_API_KEY,
-      })
-    );
+    // const transporter = nodemailer.createTransport(
+    //   nodeMailerSendgrid({
+    //     apiKey: process.env.SENDGRID_API_KEY,
+    //   })
+    // );
 
-    const mailOptions = {
-      from: "CrossCheck",
-      to: `${email}`,
-      subject: "Account activation",
-      html: `
-      <div>Hi ${firstName}, <br> Please click on 
-      <a href="https://croscheck.herokuapp.com/api/v1/users/${userDetails.token}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
-    };
+    // const mailOptions = {
+    //   from: "takere@trapezoidlimited.com",
+    //   to: `${email}`,
+    //   subject: "Account activation",
+    //   html: `
+    //   <div>Hi ${firstName}, <br> Please click on
+    //   <a href="https://croscheck.herokuapp.com/api/v1/users/${userDetails.token}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
+    // };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        res.send(error);
-      } else {
-        return res.status(201).json({
-          message: "Please check your email for an activation link",
-        });
-      }
+    // transporter.sendMail(mailOptions, (error, info) => {
+    //   if (error) {
+    //     res.send(error);
+    //   } else {
+    //     return res.status(201).json({
+    //       message: "Please check your email for an activation link",
+    //     });
+    //   }
+    // });
+
+    return res.send(200).json({
+      user: userDetails,
     });
   } catch (error) {
     return res.status(500).json({
@@ -142,7 +150,7 @@ const login = async (req, res) => {
 
     if (existingUser && existingUser.confirmed === false) {
       return res.status(400).json({
-        status: 400,
+        status: 401,
         message: "Account not activated",
       });
     }
