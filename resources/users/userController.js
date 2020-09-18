@@ -181,10 +181,10 @@ const forgotPassword = async (req, res) => {
           message: "user not found",
         });
       }
-
-      user.resetPasswordToken = Math.floor(
+      const generatedToken = Math.floor(
         Math.random() * (99896 - 10122) + 10122
       );
+      user.resetPasswordToken = generatedToken;
       user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
       user.save();
@@ -201,9 +201,9 @@ const forgotPassword = async (req, res) => {
       to: `${email}`,
       subject: "Password Reset",
       html: `
-      <div>You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
-      To reset your password, complete the process by clicking on:\n\n
-      <a href="http://localhost:3000/${email}" rel="nofollow" target="_blank">this link</a></div> `,
+      <div>You are receiving this because you (or someone else) have requested the reset of the password for your account.<br>
+      <h1>${generatedToken}</h1>
+     <p>Enter this code to complete the reset.</p></div> `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
