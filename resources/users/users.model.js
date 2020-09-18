@@ -47,7 +47,7 @@ const UserSchema = Schema({
   },
   confirmed: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   password: {
     type: String,

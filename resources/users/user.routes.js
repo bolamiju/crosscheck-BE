@@ -8,6 +8,6 @@ const { register, login, verifyAccount } = userController;
 
 router.post("/register", register);
 router.post("/login", login);
-router.put("/:token/", accountActivationToken, verifyAccount);
+router.put("/:email", verifyAccount);
 
 module.exports = router;

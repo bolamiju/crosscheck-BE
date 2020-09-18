@@ -60,33 +60,29 @@ const register = async (req, res) => {
     await user.save();
     const userDetails = AuthHelper.Auth.toAuthJSON(user);
 
-    // const transporter = nodemailer.createTransport(
-    //   nodeMailerSendgrid({
-    //     apiKey: process.env.SENDGRID_API_KEY,
-    //   })
-    // );
+    const transporter = nodemailer.createTransport(
+      nodeMailerSendgrid({
+        apiKey: process.env.SENDGRID_API_KEY,
+      })
+    );
 
-    // const mailOptions = {
-    //   from: "takere@trapezoidlimited.com",
-    //   to: `${email}`,
-    //   subject: "Account activation",
-    //   html: `
-    //   <div>Hi ${firstName}, <br> Please click on
-    //   <a href="https://croscheck.herokuapp.com/api/v1/users/${userDetails.token}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
-    // };
+    const mailOptions = {
+      from: "takere@trapezoidlimited.com",
+      to: `${email}`,
+      subject: "Account activation",
+      html: `
+      <div>Hi ${firstName}, <br> Please click on
+      <a href="https://croscheck.herokuapp.com/api/v1/users/${userDetails.token}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
+    };
 
-    // transporter.sendMail(mailOptions, (error, info) => {
-    //   if (error) {
-    //     res.send(error);
-    //   } else {
-    //     return res.status(201).json({
-    //       message: "Please check your email for an activation link",
-    //     });
-    //   }
-    // });
-
-    return res.send(200).json({
-      user: userDetails,
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.send(error);
+      } else {
+        return res.status(201).json({
+          message: "Please check your email for an activation link",
+        });
+      }
     });
   } catch (error) {
     return res.status(500).json({
@@ -97,18 +93,19 @@ const register = async (req, res) => {
 };
 
 const verifyAccount = async (req, res) => {
-  // const { status } = req.params;
   const updateparamters = req.body;
   console.log("params", req.params);
-  const { userId } = req;
+  const { email } = req.params;
   try {
-    await Users.findOne({ _id: userId }, function (err, result) {
+    await Users.findOne({ email }, function (err, result) {
       if (!result) {
-        return res.send(404).json({
+        return res.sendStatus(404).json({
           message: "user not found",
         });
       }
+      console.log(result);
     });
+
     const confirmUser = await Users.updateOne(
       { _id: userId },
       { $set: updateparamters }
