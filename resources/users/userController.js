@@ -72,7 +72,7 @@ const register = async (req, res) => {
       subject: "Account activation",
       html: `
       <div>Hi ${firstName}, <br> Please click on
-      <a href="https://croscheck.herokuapp.com/api/v1/users/${userDetails.token}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
+      <a href="http://localhost:3000/${email}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -93,8 +93,6 @@ const register = async (req, res) => {
 };
 
 const verifyAccount = async (req, res) => {
-  const updateparamters = req.body;
-  console.log("params", req.params);
   const { email } = req.params;
   try {
     await Users.findOne({ email }, function (err, result) {
@@ -107,8 +105,8 @@ const verifyAccount = async (req, res) => {
     });
 
     const confirmUser = await Users.updateOne(
-      { _id: userId },
-      { $set: updateparamters }
+      { email: email },
+      { $set: { confirmed: true } }
     );
     if (confirmUser) {
       return res.status(200).json({
@@ -174,4 +172,94 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login, verifyAccount };
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    Users.findOne({ email }, function (err, user) {
+      if (!user) {
+        return res.sendStatus(404).json({
+          message: "user not found",
+        });
+      }
+
+      user.resetPasswordToken = Math.floor(
+        Math.random() * (99896 - 10122) + 10122
+      );
+      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+      user.save();
+    });
+
+    const transporter = nodemailer.createTransport(
+      nodeMailerSendgrid({
+        apiKey: process.env.SENDGRID_API_KEY,
+      })
+    );
+
+    const mailOptions = {
+      from: "takere@trapezoidlimited.com",
+      to: `${email}`,
+      subject: "Password Reset",
+      html: `
+      <div>You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+      To reset your password, complete the process by clicking on:\n\n
+      <a href="http://localhost:3000/${email}" rel="nofollow" target="_blank">this link</a></div> `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.send(error);
+      } else {
+        return res.status(201).json({
+          message: "A password reset token has been sent to your email",
+        });
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "Could not login user",
+    });
+  }
+};
+
+// const resetPassword = async (req, res) => {
+//   const { email } = req.params;
+//   const { password, confirmPassword } = req.body;
+//   try {
+//     await Users.findOne({ email }, function (err, result) {
+//       if (!result) {
+//         return res.sendStatus(404).json({
+//           message: "user not found",
+//         });
+//       }
+//       if (password.trim() !== confirmPassword.trim()) {
+//         res.sendStatus(404).json({
+//           message: "password do not match",
+//         });
+//       }
+//       const salt = genSaltSync(10);
+//       const hash = hashSync(password, salt);
+//     });
+//     if (userPassword) {
+//       return es.sendStatus(404).json({
+//         message: "user not found",
+//       });
+//     }
+
+//     const userPassword = await Users.updateOne(
+//       { email: email },
+//       { $set: { password: hash } }
+//     );
+//     if (confirmUser) {
+//       return res.status(200).json({
+//         message: "Password changed successfully",
+//       });
+//     }
+//   } catch (error) {
+//     return res.status(500).json({
+//       error: error.message || "Something went wrong",
+//     });
+//   }
+// };
+
+module.exports = { register, login, verifyAccount, forgotPassword };

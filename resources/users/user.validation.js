@@ -8,7 +8,7 @@ module.exports = {
       organizationName: Joi.string().min(2).max(50),
       email: Joi.string().required().email(),
       country: Joi.string().required(),
-      phone: Joi.string().min(7).max(11).required(),
+      phone: Joi.string().min(7).max(20).required(),
       accountType: Joi.string(),
       companyWebsite: Joi.string(),
 
