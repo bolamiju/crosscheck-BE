@@ -174,17 +174,18 @@ const login = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
+  const generatedToken = v4();
   try {
     Users.findOne({ email }, function (err, user) {
       if (!user) {
-        return res.sendStatus(404).json({
+        return res.status(404).json({
           message: "user not found",
         });
       }
       // const generatedToken = Math.floor(
       //   Math.random() * (99896 - 10122) + 10122
       // );
-      const generatedToken = v4();
+
       user.resetPasswordToken = generatedToken; //use uuid instead
       user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
@@ -196,7 +197,7 @@ const forgotPassword = async (req, res) => {
         apiKey: process.env.SENDGRID_API_KEY,
       })
     );
-
+    console.log("gene", generatedToken);
     const mailOptions = {
       from: "takere@trapezoidlimited.com",
       to: `${email}`,
@@ -209,7 +210,7 @@ const forgotPassword = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        res.send(error);
+        res.status(404).json({ message: error });
       } else {
         return res.status(201).json({
           message: "A password reset token has been sent to your email",
@@ -234,13 +235,13 @@ const resetPassword = async (req, res) => {
       },
       function (err, user) {
         if (!user) {
-          req.sendStatus(404).json({
+          return res.status(404).json({
             message: "Password reset token is invalid or has expired.",
           });
         }
 
-        if (password.trim() !== confirmPassword.trim()) {
-          res.sendStatus(404).json({
+        if (newPassword !== confirmPassword) {
+          return res.status(404).json({
             message: "password do not match",
           });
         }
@@ -249,17 +250,13 @@ const resetPassword = async (req, res) => {
         user.password = hash;
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
+
+        user.save();
+        return res.status(200).json({
+          message: "Password changed successfully",
+        });
       }
     );
-    return res.status(200).json({
-      message: "Password changed successfully",
-    });
-    // await Users.updateOne({ email: email }, { $set: { password: hash } });
-    // if (confirmUser) {
-    //   return res.status(200).json({
-    //     message: "Password changed successfully",
-    //   });
-    // }
   } catch (error) {
     return res.status(500).json({
       error: error.message || "Something went wrong",
@@ -267,4 +264,10 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = { register, login, verifyAccount, forgotPassword };
+module.exports = {
+  register,
+  login,
+  verifyAccount,
+  forgotPassword,
+  resetPassword,
+};
