@@ -177,6 +177,7 @@ const forgotPassword = async (req, res) => {
   const generatedToken = v4();
   try {
     Users.findOne({ email }, function (err, user) {
+      console.log("see user", user);
       if (!user) {
         return res.status(404).json({
           message: "user not found",
@@ -190,32 +191,36 @@ const forgotPassword = async (req, res) => {
       user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
       user.save();
-    });
 
-    const transporter = nodemailer.createTransport(
-      nodeMailerSendgrid({
-        apiKey: process.env.SENDGRID_API_KEY,
-      })
-    );
-    console.log("gene", generatedToken);
-    const mailOptions = {
-      from: "takere@trapezoidlimited.com",
-      to: `${email}`,
-      subject: "Password Reset",
-      html: `
-      <div>You are receiving this because you (or someone else) have requested the reset of the password for your account.<br>
-      <h1>${generatedToken}</h1>
-     <p>Enter this code to complete the reset.</p></div> `,
-    };
+      const transporter = nodemailer.createTransport(
+        nodeMailerSendgrid({
+          apiKey: process.env.SENDGRID_API_KEY,
+        })
+      );
+      console.log("gene", generatedToken);
+      const mailOptions = {
+        from: "takere@trapezoidlimited.com",
+        to: `${email}`,
+        subject: "Password Reset",
+        html: `
+            <div>Someone (hopefully you) has requested a password reset for your Heroku account. Follow the link below to set a new password:<br><br>
+            <a href="https://lucid-nightingale-416243.netlify.app/reset/${generatedToken}" rel="nofollow" target="_blank">https://lucid-nightingale-416243.netlify.app/reset/${generatedToken}</a><br>
 
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        res.status(404).json({ message: error });
-      } else {
-        return res.status(201).json({
-          message: "A password reset token has been sent to your email",
-        });
-      }
+           <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p><br>
+           <p>CrossCheck Team</p>
+           <a href="https://lucid-nightingale-416243.netlify.app rel="nofollow" target="_blank"" >https://crocheck.com</a>
+           </div> `,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          res.status(404).json({ message: error });
+        } else {
+          return res.status(201).json({
+            message: "A password reset token has been sent to your email",
+          });
+        }
+      });
     });
   } catch (error) {
     return res.status(500).json({
