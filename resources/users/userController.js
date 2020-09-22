@@ -60,7 +60,6 @@ const register = async (req, res) => {
 
     await user.save();
     const userDetails = AuthHelper.Auth.toAuthJSON(user);
-
     const transporter = nodemailer.createTransport(
       nodeMailerSendgrid({
         apiKey: process.env.SENDGRID_API_KEY,
@@ -203,7 +202,7 @@ const forgotPassword = async (req, res) => {
         to: `${email}`,
         subject: "Password Reset",
         html: `
-            <div>Someone (hopefully you) has requested a password reset for your Heroku account. Follow the link below to set a new password:<br><br>
+            <div>Someone (hopefully you) has requested a password reset for your crosscheck account. Follow the link below to set a new password:<br><br>
             <a href="https://lucid-nightingale-416243.netlify.app/reset/${generatedToken}" rel="nofollow" target="_blank">https://lucid-nightingale-416243.netlify.app/reset/${generatedToken}</a><br>
 
            <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p><br>
