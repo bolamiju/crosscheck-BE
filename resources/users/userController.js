@@ -72,7 +72,7 @@ const register = async (req, res) => {
       subject: "Account activation",
       html: `
       <div>Hi ${firstName}, <br> Please click on
-      <a href="https://lucid-nightingale-416243.netlify.app/${email}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
+      <a href="https://lucid-nightingale-416243.netlify.app/verify/${email}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
