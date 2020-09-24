@@ -10,7 +10,6 @@ const AuthHelper = require("./auth");
 
 const { genSaltSync, hashSync } = bcrypt;
 const client = new OAuth2Client(process.env.GOOGLE_APP_ID);
-console.log("object", process.env.GOOGLE_APP_ID);
 
 const register = async (req, res) => {
   try {
@@ -278,8 +277,7 @@ const googleLogin = (req, res) => {
   client
     .verifyIdToken({
       idToken: tokenId,
-      audience:
-        "532880439275-phmdk8c1pah01n0tjc5cton1k9376ps6.apps.googleusercontent.com",
+      audience: process.env.GOOGLE_APP_ID,
     })
     .then(async (response) => {
       const { email, email_verified } = response.payload;
