@@ -1,4 +1,6 @@
 const bcrypt = require("bcryptjs");
+const fetch = require("node-fetch");
+const { OAuth2Client } = require("google-auth-library");
 const { v4 } = require("uuid");
 const nodemailer = require("nodemailer");
 const nodeMailerSendgrid = require("nodemailer-sendgrid");
@@ -7,6 +9,8 @@ const Users = require("./users.model");
 const AuthHelper = require("./auth");
 
 const { genSaltSync, hashSync } = bcrypt;
+const client = new OAuth2Client(process.env.GOOGLE_APP_ID);
+console.log("object", process.env.GOOGLE_APP_ID);
 
 const register = async (req, res) => {
   try {
@@ -268,10 +272,90 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const googleLogin = (req, res) => {
+  const { tokenId } = req.body;
+
+  client
+    .verifyIdToken({
+      idToken: tokenId,
+      audience:
+        "532880439275-phmdk8c1pah01n0tjc5cton1k9376ps6.apps.googleusercontent.com",
+    })
+    .then(async (response) => {
+      const { email, email_verified } = response.payload;
+
+      if (email_verified) {
+        Users.findOne({ email }, async function (err, user) {
+          if (err) {
+            return res.status(500).json({
+              message: "Something went wrong",
+            });
+          }
+
+          if (!user) {
+            return res.status(404).json({
+              message: "No account associated with this google account",
+            });
+          }
+          if (user) {
+            await Users.updateOne(
+              { email: email },
+              { $set: { confirmed: true } }
+            );
+          }
+          return res.status(200).json({
+            message: "Logged in successfully",
+            user: AuthHelper.Auth.toAuthJSON(user),
+          });
+        });
+      }
+    });
+};
+
+const facebookLogin = (req, res) => {
+  const { userID, accessToken } = req.body;
+
+  let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=email&access_token=${accessToken}`;
+
+  fetch(urlGraphFacebook, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((response) => {
+      const { email } = response;
+      if (email) {
+        Users.findOne({ email }, async function (err, user) {
+          if (err) {
+            return res.status(500).json({
+              message: "Something went wrong",
+            });
+          }
+
+          if (!user) {
+            return res.status(404).json({
+              message: "No account associated with this google account",
+            });
+          }
+          if (user) {
+            await Users.updateOne(
+              { email: email },
+              { $set: { confirmed: true } }
+            );
+          }
+          return res.status(200).json({
+            message: "Logged in successfully",
+            user: AuthHelper.Auth.toAuthJSON(user),
+          });
+        });
+      }
+    });
+};
 module.exports = {
   register,
   login,
   verifyAccount,
   forgotPassword,
   resetPassword,
+  googleLogin,
+  facebookLogin,
 };
