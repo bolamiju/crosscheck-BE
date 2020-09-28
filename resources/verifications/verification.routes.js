@@ -8,6 +8,13 @@ const router = express.Router();
 const verificationController = require("./verificationController");
 const { requestVerification, upload } = verificationController;
 
-router.post("/request", upload.single("certImage"), requestVerification);
+router.post(
+  "/request",
+  upload.fields([
+    { name: "certImage", maxCount: 1 },
+    { name: "firstName", maxCount: 1 },
+  ]),
+  requestVerification
+);
 
 module.exports = router;

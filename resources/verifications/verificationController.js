@@ -42,12 +42,12 @@ const requestVerification = async (req, res) => {
     } = req.body;
 
     const verification = new Verification({
-      firstName,
+      firstName: req.files.firstName[0].path.replace(/\\/g, "/"),
       //   whatToRequest,
       //   school,
       //   amount,
       lastName,
-      certImage: req.file.path.replace(/\\/g, "/"),
+      certImage: req.files.certImage[0].path.replace(/\\/g, "/"),
     });
 
     await verification.save();
@@ -56,7 +56,7 @@ const requestVerification = async (req, res) => {
       message: "Request submitted",
     });
   } catch (error) {
-    if (!req.file) {
+    if (!req.files) {
       return res.status(400).send({
         message: "No file received or invalid file type",
         success: false,
