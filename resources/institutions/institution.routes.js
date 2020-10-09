@@ -12,8 +12,8 @@ const {
   deleteInstitution,
 } = institutionController;
 
-router.post("/add", verifyToken, validateAdmin, addInstitution);
-router.get("/", verifyToken, getAllInstitutions);
+router.post("/add", addInstitution);
+router.get("/", getAllInstitutions);
 router.put("/:name/", verifyToken, validateAdmin, editInstitutionInfo);
 router.delete("/:_id", verifyToken, validateAdmin, deleteInstitution);
 

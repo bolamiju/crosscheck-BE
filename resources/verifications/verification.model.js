@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 const verificationSchema = Schema({
-  whatToRequest: {
-    type: String,
-    minlength: 2,
-    maxlength: 50,
-  },
   firstName: {
     type: String,
     minlength: 2,
@@ -17,29 +12,58 @@ const verificationSchema = Schema({
     minlength: 2,
     maxlength: 50,
   },
-  amount: {
+  middleName: {
     type: String,
-    required: false,
     minlength: 2,
     maxlength: 50,
   },
+  // amount: {
+  //   type: String,
+  //   required: false,
+  //   minlength: 2,
+  //   maxlength: 50,
+  // },
 
-  school: {
+  dateOfBirth: {
     type: String,
     minlength: 2,
     maxlength: 50,
   },
-  degreeLevel: {
+  course: {
     type: String,
     minlength: 2,
     maxlength: 50,
   },
-  degreeTitle: {
+  studentId: {
     type: String,
     minlength: 2,
     maxlength: 50,
   },
-  date: Date,
+  qualification: {
+    type: String,
+    minlength: 2,
+    maxlength: 50,
+  },
+  classification: {
+    type: String,
+    minlength: 2,
+    maxlength: 50,
+  },
+  admissionYear: {
+    type: String,
+    minlength: 2,
+    maxlength: 50,
+  },
+  graduationYear: {
+    type: String,
+    minlength: 2,
+    maxlength: 50,
+  },
+  enrollmentStatus: {
+    type: String,
+    minlength: 2,
+    maxlength: 50,
+  },
   certImage: { type: String },
 });
 

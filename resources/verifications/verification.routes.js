@@ -10,10 +10,7 @@ const { requestVerification, upload } = verificationController;
 
 router.post(
   "/request",
-  upload.fields([
-    { name: "certImage", maxCount: 1 },
-    { name: "firstName", maxCount: 1 },
-  ]),
+  upload.fields([{ name: "certImage", maxCount: 1 }]),
   requestVerification
 );
 

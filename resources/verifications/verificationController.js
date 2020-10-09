@@ -14,9 +14,11 @@ const storage = multer.diskStorage({
   },
 });
 const fileFilter = (req, file, cb) => {
+  console.log(file);
   if (
     !file.mimetype.includes("image/png") &&
-    !file.mimetype.includes("image/jpeg")
+    !file.mimetype.includes("image/jpeg") &&
+    !file.mimetype.includes("application/pdf")
   ) {
     return cb(null, false);
   }
@@ -33,20 +35,30 @@ const requestVerification = async (req, res) => {
   try {
     const {
       firstName,
-      whatToRequest,
-      school,
-      amount,
       lastName,
-      degreeTitle,
-      degreeLevel,
+      middleName,
+      dateOfBirth,
+      studentId,
+      course,
+      qualification,
+      classification,
+      admissionYear,
+      graduationYear,
+      enrollmentStatus,
     } = req.body;
 
     const verification = new Verification({
-      firstName: req.files.firstName[0].path.replace(/\\/g, "/"),
-      //   whatToRequest,
-      //   school,
-      //   amount,
+      firstName,
       lastName,
+      middleName,
+      dateOfBirth,
+      studentId,
+      course,
+      qualification,
+      classification,
+      admissionYear,
+      graduationYear,
+      enrollmentStatus,
       certImage: req.files.certImage[0].path.replace(/\\/g, "/"),
     });
 
