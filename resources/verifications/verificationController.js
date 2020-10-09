@@ -45,6 +45,7 @@ const requestVerification = async (req, res) => {
       admissionYear,
       graduationYear,
       enrollmentStatus,
+      institution,
     } = req.body;
 
     const verification = new Verification({
@@ -59,6 +60,7 @@ const requestVerification = async (req, res) => {
       admissionYear,
       graduationYear,
       enrollmentStatus,
+      institution,
       certImage: req.files.certImage[0].path.replace(/\\/g, "/"),
     });
 

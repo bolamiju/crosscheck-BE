@@ -64,6 +64,11 @@ const verificationSchema = Schema({
     minlength: 2,
     maxlength: 50,
   },
+  institution: {
+    type: String,
+    minlength: 2,
+    maxlength: 80,
+  },
   certImage: { type: String },
 });
 
