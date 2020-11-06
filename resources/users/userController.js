@@ -75,7 +75,7 @@ const register = async (req, res) => {
       subject: "Account activation",
       html: `
       <div>Hi ${firstName}, <br> Please click on
-      <a href="https://lucid-nightingale-416243.netlify.app/verify/${email}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
+      <a href="https://crosschek.netlify.app/verify/${email}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -97,6 +97,7 @@ const register = async (req, res) => {
 
 const verifyAccount = async (req, res) => {
   const { email } = req.params;
+  console.log("email", email);
   try {
     await Users.findOne({ email }, function (err, result) {
       if (!result) {
@@ -141,7 +142,7 @@ const login = async (req, res) => {
     if (!existingUser) {
       return res.status(400).json({
         status: 400,
-        message: "Invalid email or password",
+        message: "invalid email or password",
       });
     }
 
@@ -206,11 +207,11 @@ const forgotPassword = async (req, res) => {
         subject: "Password Reset",
         html: `
             <div>Someone (hopefully you) has requested a password reset for your crosscheck account. Follow the link below to set a new password:<br><br>
-            <a href="https://lucid-nightingale-416243.netlify.app/reset/${generatedToken}" rel="nofollow" target="_blank">https://lucid-nightingale-416243.netlify.app/reset/${generatedToken}</a><br>
+            <a href="https://crosschek.netlify.app/reset/${generatedToken}" rel="nofollow" target="_blank">https://crosschek.netlify.app/reset/${generatedToken}</a><br>
 
            <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p><br>
            <p>CrossCheck Team</p>
-           <a href="https://lucid-nightingale-416243.netlify.app rel="nofollow" target="_blank"" >https://crocheck.com</a>
+           <a href="https://crosschek.netlify.app rel="nofollow" target="_blank"" >https://crocheck.com</a>
            </div> `,
       };
 
@@ -272,6 +273,7 @@ const resetPassword = async (req, res) => {
 };
 
 const googleLogin = (req, res) => {
+  console.log("hitted");
   const { tokenId } = req.body;
 
   client
@@ -291,6 +293,7 @@ const googleLogin = (req, res) => {
           }
 
           if (!user) {
+            console.log("not found o");
             return res.status(404).json({
               message: "No account associated with this google account",
             });

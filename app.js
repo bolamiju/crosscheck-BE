@@ -9,10 +9,9 @@ const expressMiddlewares = require("./utils/middlewares");
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use("/uploads", express.static("uploads"));
 expressMiddlewares(app);
+
+app.use("/uploads", express.static("uploads"));
 
 app.use(resources);
 
