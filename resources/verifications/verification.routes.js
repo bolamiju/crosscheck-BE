@@ -36,11 +36,12 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-const { requestVerification } = require("./verificationController");
+const {
+  requestVerification,
+  getUserVerifications,
+} = require("./verificationController");
 
-router.post(
-  "/request", upload.single('certImage'),
-  requestVerification
-);
+router.post("/request", upload.single("certImage"), requestVerification);
+router.get("/:email", getUserVerifications);
 
 module.exports = router;

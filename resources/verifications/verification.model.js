@@ -17,12 +17,12 @@ const verificationSchema = Schema({
     minlength: 2,
     maxlength: 50,
   },
-  // amount: {
-  //   type: String,
-  //   required: false,
-  //   minlength: 2,
-  //   maxlength: 50,
-  // },
+  email: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 50,
+  },
 
   dateOfBirth: {
     type: String,
@@ -33,6 +33,12 @@ const verificationSchema = Schema({
     type: String,
     minlength: 2,
     maxlength: 50,
+  },
+  amount: {
+    type: Number,
+    required: true,
+    minlength: 4,
+    maxlength: 80,
   },
   studentId: {
     type: String,
@@ -73,6 +79,11 @@ const verificationSchema = Schema({
     type: String,
     minlength: 2,
     maxlength: 80,
+  },
+  date: {
+    type: String,
+    minlength: 2,
+    maxlength: 20,
   },
   certImage: { type: String },
 });
