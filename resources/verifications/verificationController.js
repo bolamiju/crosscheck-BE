@@ -1,4 +1,6 @@
 const Verification = require("./verification.model");
+const nodemailer = require("nodemailer");
+const nodeMailerSendgrid = require("nodemailer-sendgrid");
 
 const requestVerification = async (req, res) => {
   try {
@@ -48,8 +50,46 @@ const requestVerification = async (req, res) => {
 
     await verification.save();
 
-    return res.status(201).json({
-      message: "Request submitted",
+    const transporter = nodemailer.createTransport(
+      nodeMailerSendgrid({
+        apiKey: process.env.SENDGRID_API_KEY,
+      })
+    );
+
+    const adminMail = {
+      from: "takere@trapezoidlimited.com",
+      to: "tolaked@yahoo.com",
+      subject: "New Order",
+      html: `
+      <div>Hi , <br>There is a new order for ${institution}  </div> `,
+    };
+
+    transporter.sendMail(adminMail, (error, info) => {
+      if (error) {
+        res.send(error);
+      } else {
+        console.log("sent");
+      }
+    });
+
+    const mailOptions = {
+      from: "takere@trapezoidlimited.com",
+      to: `${email}`,
+      subject: "Order Received",
+      html: `
+      <div>Hi ${firstName}, <br> We have receieved your education verification order for ${institution}  </div> `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("error");
+        res.send(error);
+      } else {
+        console.log("sent");
+        return res.status(201).json({
+          message: "Request submitted",
+        });
+      }
     });
   } catch (error) {
     if (!req.file) {
