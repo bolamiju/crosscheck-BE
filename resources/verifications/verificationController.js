@@ -15,7 +15,6 @@ const requestVerification = async (req, res) => {
       graduationYear,
       enrollmentStatus,
       institution,
-      status,
       amount,
       email,
     } = req.body;
@@ -39,7 +38,6 @@ const requestVerification = async (req, res) => {
       graduationYear,
       enrollmentStatus,
       institution,
-      status,
       date,
       email,
       amount,
@@ -87,7 +85,61 @@ const getUserVerifications = (req, res) => {
   }
 };
 
+const getVerificationsByStatus = (req, res) => {
+  const { status } = req.params;
+  try {
+    Verification.find({ status }, (err, verifications) => {
+      if (verifications.length === 0) {
+        return res.status(404).json({
+          message: "no verifications found",
+        });
+      }
+
+      return res.status(200).json({
+        message: `${verifications.length} verifications(s) found`,
+        verifications,
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
+const updateVerification = async (req, res) => {
+  const { verificationId } = req.params;
+  const { verificationStatus } = req.body;
+  console.log("email", email);
+  try {
+    await Verification.findOne({ verificationId }, function (err, result) {
+      if (!result) {
+        return res.sendStatus(404).json({
+          message: "verification not found",
+        });
+      }
+    });
+
+    const updateVerification = await Verification.updateOne(
+      { verificationId: verificationId },
+      { $set: { status: verificationStatus } }
+    );
+    if (updateVerification) {
+      return res.status(200).json({
+        message: "verification updated",
+        verification: updateVerification,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
 module.exports = {
   requestVerification,
   getUserVerifications,
+  getVerificationsByStatus,
+  updateVerification,
 };

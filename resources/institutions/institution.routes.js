@@ -10,11 +10,13 @@ const {
   getAllInstitutions,
   editInstitutionInfo,
   deleteInstitution,
+  getInstitutionByCountry,
 } = institutionController;
 
 router.post("/add", addInstitution);
 router.get("/", getAllInstitutions);
-router.put("/:name/", verifyToken, validateAdmin, editInstitutionInfo);
+router.get("/:country", getInstitutionByCountry);
+router.put("/:name", verifyToken, validateAdmin, editInstitutionInfo);
 router.delete("/:_id", verifyToken, validateAdmin, deleteInstitution);
 
 module.exports = router;
