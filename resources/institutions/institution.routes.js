@@ -15,8 +15,8 @@ const {
 
 router.post("/add", addInstitution);
 router.get("/", getAllInstitutions);
-router.get("/:country", getInstitutionByCountry);
-router.put("/:name", verifyToken, validateAdmin, editInstitutionInfo);
+router.get("/country/:country", getInstitutionByCountry);
+router.put("/name/:name", verifyToken, validateAdmin, editInstitutionInfo);
 router.delete("/:_id", verifyToken, validateAdmin, deleteInstitution);
 
 module.exports = router;

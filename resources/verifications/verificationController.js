@@ -109,7 +109,7 @@ const getUserVerifications = (req, res) => {
     Verification.find({ email }, (err, verifications) => {
       if (verifications.length === 0) {
         return res.status(404).json({
-          message: "no verifications found",
+          message: "no verifications by email found",
         });
       }
 
@@ -127,11 +127,12 @@ const getUserVerifications = (req, res) => {
 
 const getVerificationsByStatus = (req, res) => {
   const { status } = req.params;
+  console.log("statusss", req.params.status);
   try {
     Verification.find({ status }, (err, verifications) => {
       if (verifications.length === 0) {
         return res.status(404).json({
-          message: "no verifications found",
+          message: "no verificationsss found",
         });
       }
 

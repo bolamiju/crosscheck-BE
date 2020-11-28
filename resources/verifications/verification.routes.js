@@ -43,7 +43,7 @@ const {
 } = require("./verificationController");
 
 router.post("/request", upload.single("certImage"), requestVerification);
-router.get("/:email", getUserVerifications, getVerificationsByStatus);
-router.get("/:status");
+router.get("/byemail/:email", getUserVerifications);
+router.get("/status/:status", getVerificationsByStatus);
 
 module.exports = router;
