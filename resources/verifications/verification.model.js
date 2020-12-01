@@ -79,6 +79,7 @@ const verificationSchema = Schema({
     type: String,
     minlength: 2,
     maxlength: 80,
+    default: "pending",
   },
   date: {
     type: String,

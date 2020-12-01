@@ -72,16 +72,16 @@ const editInstitutionInfo = async (req, res) => {
   const { name } = req.params;
   console.log("params", req.params);
   try {
-    const institution = await Institution.findOne({ name }, function (
-      err,
-      result
-    ) {
-      if (!result) {
-        return res.send(404).json({
-          message: "Institution not found",
-        });
+    const institution = await Institution.findOne(
+      { name },
+      function (err, result) {
+        if (!result) {
+          return res.send(404).json({
+            message: "Institution not found",
+          });
+        }
       }
-    });
+    );
 
     if (!institution) {
       return res.status(404).json({
@@ -137,9 +137,32 @@ const deleteInstitution = (req, res) => {
   });
 };
 
+const getInstitutionByCountry = (req, res) => {
+  const { country } = req.params;
+  try {
+    Institution.find({ country }, (err, institution) => {
+      if (institution.length === 0) {
+        return res.status(404).json({
+          message: "no institution found",
+        });
+      }
+
+      return res.status(200).json({
+        message: `${institution.length} institution(s) found`,
+        institution,
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
 module.exports = {
   addInstitution,
   getAllInstitutions,
   editInstitutionInfo,
   deleteInstitution,
+  getInstitutionByCountry,
 };

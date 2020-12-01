@@ -39,9 +39,11 @@ const upload = multer({
 const {
   requestVerification,
   getUserVerifications,
+  getVerificationsByStatus,
 } = require("./verificationController");
 
 router.post("/request", upload.single("certImage"), requestVerification);
-router.get("/:email", getUserVerifications);
+router.get("/byemail/:email", getUserVerifications);
+router.get("/status/:status", getVerificationsByStatus);
 
 module.exports = router;
