@@ -9,7 +9,7 @@ const {
 } = require("./transcriptController");
 
 router.post("/request", requestTranscript);
-router.get("/byemail/:status", getUserTranscripts);
+router.get("/byemail/:email", getUserTranscripts);
 router.get("/status/:status", getTranscriptByStatus);
 router.put("/:id", updateTranscript);
 
