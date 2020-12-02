@@ -1,8 +1,16 @@
 const { Router } = require("express");
 const router = Router();
 
-const { requestTranscript } = require("./transcriptController");
+const {
+  requestTranscript,
+  getUserTranscripts,
+  getTranscriptByStatus,
+  updateTranscript,
+} = require("./transcriptController");
 
 router.post("/request", requestTranscript);
+router.get("/byemail/:status", getUserTranscripts);
+router.get("/status/:status", getTranscriptByStatus);
+router.put("/:id", updateTranscript);
 
 module.exports = router;

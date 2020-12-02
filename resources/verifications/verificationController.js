@@ -5,6 +5,7 @@ const nodeMailerSendgrid = require("nodemailer-sendgrid");
 const requestVerification = async (req, res) => {
   try {
     const {
+      id,
       firstName,
       lastName,
       middleName,
@@ -28,6 +29,7 @@ const requestVerification = async (req, res) => {
     const date = `${day}-${month}-${year}`;
 
     const verification = new Verification({
+      id,
       firstName,
       lastName,
       middleName,
@@ -75,7 +77,7 @@ const requestVerification = async (req, res) => {
       to: `${email}`,
       subject: "Order Received",
       html: `
-      <div>Hi ${firstName}, <br> We have receieved your education verification order for ${institution}  </div> `,
+      <div>Hi ${firstName}, <br> We have receieved your education verification order for ${institution}  with id ${id}</div> `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -127,12 +129,12 @@ const getUserVerifications = (req, res) => {
 
 const getVerificationsByStatus = (req, res) => {
   const { status } = req.params;
-  console.log("statusss", req.params.status);
+
   try {
     Verification.find({ status }, (err, verifications) => {
       if (verifications.length === 0) {
         return res.status(404).json({
-          message: "no verificationsss found",
+          message: "no verifications found",
         });
       }
 
@@ -151,7 +153,7 @@ const getVerificationsByStatus = (req, res) => {
 const updateVerification = async (req, res) => {
   const { verificationId } = req.params;
   const { verificationStatus } = req.body;
-  console.log("email", email);
+
   try {
     await Verification.findOne({ verificationId }, function (err, result) {
       if (!result) {
@@ -162,7 +164,7 @@ const updateVerification = async (req, res) => {
     });
 
     const updateVerification = await Verification.updateOne(
-      { verificationId: verificationId },
+      { id: verificationId },
       { $set: { status: verificationStatus } }
     );
     if (updateVerification) {

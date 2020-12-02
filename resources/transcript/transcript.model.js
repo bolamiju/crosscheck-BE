@@ -72,6 +72,13 @@ const TranscriptSchema = Schema({
     minlength: 2,
     maxlength: 80,
   },
+  status: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 80,
+    default: "pending",
+  },
   date: {
     type: String,
     minlength: 2,

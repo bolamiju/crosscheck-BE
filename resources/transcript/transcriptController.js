@@ -3,9 +3,9 @@ const nodemailer = require("nodemailer");
 const nodeMailerSendgrid = require("nodemailer-sendgrid");
 
 const requestTranscript = async (req, res) => {
-  console.log("na body", req.body);
   try {
     const {
+      id,
       firstName,
       lastName,
       course,
@@ -28,6 +28,7 @@ const requestTranscript = async (req, res) => {
     const date = `${day}-${month}-${year}`;
 
     const transcript = new Transcript({
+      id,
       firstName,
       lastName,
       course,
@@ -71,7 +72,7 @@ const requestTranscript = async (req, res) => {
       to: `${email}`,
       subject: "Order Received",
       html: `
-      <div>Hi ${firstName}, <br> We have receieved your transcript order for ${institution}  </div> `,
+      <div>Hi ${firstName}, <br> We have receieved your transcript order with id ${id} for ${institution}  </div> `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -79,7 +80,6 @@ const requestTranscript = async (req, res) => {
         console.log("error");
         res.send(error);
       } else {
-        console.log("sent");
         return res.status(201).json({
           message: "Request submitted",
         });
@@ -93,6 +93,84 @@ const requestTranscript = async (req, res) => {
   }
 };
 
+const getTranscriptByStatus = (req, res) => {
+  const { status } = req.params;
+
+  try {
+    Transcript.find({ status }, (err, transcripts) => {
+      if (transcripts.length === 0) {
+        return res.status(404).json({
+          message: "no transcripts found",
+        });
+      }
+
+      return res.status(200).json({
+        message: `${transcripts.length} transcript(s) found`,
+        transcripts,
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
+const getUserTranscripts = (req, res) => {
+  const { email } = req.params;
+  try {
+    Transcript.find({ email }, (err, transcripts) => {
+      if (transcripts.length === 0) {
+        return res.status(404).json({
+          message: "no transcripts with email found",
+        });
+      }
+
+      return res.status(200).json({
+        message: `${transcripts.length} transcript(s) found`,
+        transcripts,
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
+const updateTranscript = async (req, res) => {
+  const { transcriptId } = req.params;
+  const { transcriptStatus } = req.body;
+
+  try {
+    await Transcript.findOne({ transcriptId }, function (err, result) {
+      if (!result) {
+        return res.sendStatus(404).json({
+          message: "transcript not found",
+        });
+      }
+    });
+
+    const updateTranscript = await Transcript.updateOne(
+      { id: transcriptId },
+      { $set: { status: transcriptStatus } }
+    );
+    if (updateTranscript) {
+      return res.status(200).json({
+        message: "transcript updated",
+        transcript: updateTranscript,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
 module.exports = {
   requestTranscript,
+  getTranscriptByStatus,
+  updateTranscript,
+  getUserTranscripts,
 };
