@@ -40,10 +40,12 @@ const {
   requestVerification,
   getUserVerifications,
   getVerificationsByStatus,
+  updateVerification,
 } = require("./verificationController");
 
 router.post("/request", upload.single("certImage"), requestVerification);
 router.get("/byemail/:email", getUserVerifications);
 router.get("/status/:status", getVerificationsByStatus);
+router.put("/:id", updateVerification);
 
 module.exports = router;

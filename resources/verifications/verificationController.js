@@ -151,11 +151,11 @@ const getVerificationsByStatus = (req, res) => {
 };
 
 const updateVerification = async (req, res) => {
-  const { verificationId } = req.params;
+  const { id } = req.params;
   const { verificationStatus } = req.body;
 
   try {
-    await Verification.findOne({ verificationId }, function (err, result) {
+    await Verification.findOne({ _id: id }, function (err, result) {
       if (!result) {
         return res.sendStatus(404).json({
           message: "verification not found",
@@ -164,7 +164,7 @@ const updateVerification = async (req, res) => {
     });
 
     const updateVerification = await Verification.updateOne(
-      { id: verificationId },
+      { _id: id },
       { $set: { status: verificationStatus } }
     );
     if (updateVerification) {
