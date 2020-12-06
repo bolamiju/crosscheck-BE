@@ -27,7 +27,7 @@ const requestVerification = async (req, res) => {
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const year = today.getFullYear();
     const date = `${year}-${month}-${day}`;
-
+    console.log("file", req.file);
     const verification = new Verification({
       id,
       firstName,
