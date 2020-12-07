@@ -12,10 +12,10 @@ const app = express();
 
 expressMiddlewares(app);
 
-// app.use("/uploads", express.static("uploads"));
-var dir = path.join(__dirname, "uploads");
+app.use("/uploads", express.static("uploads"));
+// var dir = path.join(__dirname, "uploads");
 
-app.use(express.static(dir));
+// app.use(express.static(dir));
 
 app.use(resources);
 
