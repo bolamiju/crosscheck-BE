@@ -1,4 +1,4 @@
-const Message = require("./message.routes");
+const Message = require("./message.model");
 
 const sendMessage = async (req, res) => {
   try {
