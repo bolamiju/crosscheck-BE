@@ -22,7 +22,26 @@ const sendMessage = async (req, res) => {
     });
   }
 };
+const getAllMessages = (req, res) => {
+  try {
+    Message.find({}, (err, message) => {
+      if (institution.length === 0) {
+        return res.status(404).json({
+          message: "no institution found",
+        });
+      }
 
+      return res.status(200).json({
+        message: `${message.length} message(s) found`,
+        message,
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
 const deleteMessage = (req, res) => {
   const { id } = req.params;
 
@@ -57,4 +76,5 @@ const deleteMessage = (req, res) => {
 module.exports = {
   sendMessage,
   deleteMessage,
+  getAllMessages,
 };
