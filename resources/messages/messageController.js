@@ -4,7 +4,7 @@ const sendMessage = async (req, res) => {
   try {
     let { id, message, subject } = req.body;
 
-    const doc = new Institution({
+    const doc = new Message({
       id,
       message,
       subject,
