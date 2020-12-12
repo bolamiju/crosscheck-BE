@@ -27,7 +27,7 @@ const getAllMessages = (req, res) => {
     Message.find({}, (err, message) => {
       if (institution.length === 0) {
         return res.status(404).json({
-          message: "no institution found",
+          message: "no mesages found",
         });
       }
 
