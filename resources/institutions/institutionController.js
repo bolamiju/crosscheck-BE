@@ -36,7 +36,7 @@ const addInstitution = async (req, res) => {
 
     return res.status(201).json({
       message: "Institution added successfuly",
-      prescription: doc,
+      institution: doc,
     });
   } catch (error) {
     return res.status(500).json({
