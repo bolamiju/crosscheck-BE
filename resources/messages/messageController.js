@@ -25,7 +25,7 @@ const sendMessage = async (req, res) => {
 const getAllMessages = (req, res) => {
   try {
     Message.find({}, (err, message) => {
-      if (institution.length === 0) {
+      if (message.length === 0) {
         return res.status(404).json({
           message: "no mesages found",
         });
