@@ -143,24 +143,26 @@ const updateTranscript = async (req, res) => {
   const { transcriptStatus } = req.body;
 
   try {
-    await Transcript.findOne({ transcriptId }, function (err, result) {
-      if (!result) {
-        return res.sendStatus(404).json({
-          message: "transcript not found",
-        });
+    await Transcript.findOne(
+      { _id: transcriptId },
+      async function (err, result) {
+        if (!result) {
+          return res.status(404).json({
+            message: "transcript not found",
+          });
+        }
+        const updateTranscript = await Transcript.updateOne(
+          { _id: transcriptId },
+          { $set: { status: transcriptStatus } }
+        );
+        if (updateTranscript) {
+          return res.status(200).json({
+            message: "transcript updated",
+            transcript: updateTranscript,
+          });
+        }
       }
-    });
-
-    const updateTranscript = await Transcript.updateOne(
-      { id: transcriptId },
-      { $set: { status: transcriptStatus } }
     );
-    if (updateTranscript) {
-      return res.status(200).json({
-        message: "transcript updated",
-        transcript: updateTranscript,
-      });
-    }
   } catch (error) {
     return res.status(500).json({
       error: error.message || "Something went wrong",

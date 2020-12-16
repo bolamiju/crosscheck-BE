@@ -11,6 +11,6 @@ const {
 router.post("/request", requestTranscript);
 router.get("/byemail/:email", getUserTranscripts);
 router.get("/status/:status", getTranscriptByStatus);
-router.put("/:id", updateTranscript);
+router.put("/:transcriptId", updateTranscript);
 
 module.exports = router;
