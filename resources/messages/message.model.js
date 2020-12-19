@@ -18,7 +18,7 @@ const MessageSchema = Schema({
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 50,
+    maxlength: 200,
   },
 
   status: {
@@ -27,6 +27,12 @@ const MessageSchema = Schema({
     minlength: 2,
     maxlength: 80,
     default: "unread",
+  },
+  receiver: {
+    type: String,
+    minlength: 2,
+    maxlength: 80,
+    default: "N/A",
   },
 });
 

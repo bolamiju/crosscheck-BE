@@ -1,10 +1,12 @@
 const { Router } = require("express");
 const router = Router();
 const multer = require("multer");
+const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./uploads/");
+    // cb(null, "./uploads/");
+    cb(null, path.resolve(__dirname, "./uploads/"));
   },
   filename: function (req, file, cb) {
     cb(
@@ -46,6 +48,6 @@ const {
 router.post("/request", upload.single("certImage"), requestVerification);
 router.get("/byemail/:email", getUserVerifications);
 router.get("/status/:status", getVerificationsByStatus);
-router.put("/:id", updateVerification);
+router.put("/:id/:email", updateVerification);
 
 module.exports = router;

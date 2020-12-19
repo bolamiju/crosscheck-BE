@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const mongoosePaginate = require("mongoose-paginate-v2");
 const { Schema } = mongoose;
 const InstitutionSchema = Schema({
   name: {
@@ -34,6 +34,7 @@ const InstitutionSchema = Schema({
     maxlength: 20,
   },
 });
+InstitutionSchema.plugin(mongoosePaginate);
 
 const InstitutionModel = mongoose.model("Institution", InstitutionSchema);
 module.exports = InstitutionModel;

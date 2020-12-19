@@ -156,6 +156,17 @@ const updateTranscript = async (req, res) => {
           { $set: { status: transcriptStatus } }
         );
         if (updateTranscript) {
+          if (verificationStatus === "completed") {
+            const doc = new Message({
+              id,
+              message: `Your verification with id ${id} has been completed`,
+              subject: "Verification completed",
+              receiver: email,
+            });
+
+            await doc.save();
+          }
+
           return res.status(200).json({
             message: "transcript updated",
             transcript: updateTranscript,

@@ -1,6 +1,7 @@
 const Verification = require("./verification.model");
 const nodemailer = require("nodemailer");
 const nodeMailerSendgrid = require("nodemailer-sendgrid");
+const Message = require("../messages/message.model");
 
 const requestVerification = async (req, res) => {
   try {
@@ -151,9 +152,9 @@ const getVerificationsByStatus = (req, res) => {
 };
 
 const updateVerification = async (req, res) => {
-  const { id } = req.params;
+  const { id, email } = req.params;
   const { verificationStatus } = req.body;
-
+  console.log("params", req.params);
   try {
     await Verification.findOne({ _id: id }, function (err, result) {
       if (!result) {
@@ -167,7 +168,19 @@ const updateVerification = async (req, res) => {
       { _id: id },
       { $set: { status: verificationStatus } }
     );
+
     if (updateVerification) {
+      if (verificationStatus === "completed") {
+        const doc = new Message({
+          id,
+          message: `Your verification with id ${id} has been completed`,
+          subject: "Verification completed",
+          receiver: email,
+        });
+
+        await doc.save();
+      }
+
       return res.status(200).json({
         message: "verification updated",
         verification: updateVerification,
