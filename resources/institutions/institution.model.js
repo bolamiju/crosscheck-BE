@@ -7,32 +7,32 @@ const InstitutionSchema = Schema({
     required: true,
     minlength: 2,
     maxlength: 50,
-    unique: true,
+    unique: true
   },
-  amount: {
+  institute_charge: {
     type: Number,
     required: true,
     minlength: 4,
-    maxlength: 80,
+    maxlength: 80
   },
-  state: {
+  our_charge: {
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 20,
+    maxlength: 20
   },
   country: {
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 20,
+    maxlength: 20
   },
-  category: {
+  transcript_fee: {
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 20,
-  },
+    maxlength: 20
+  }
 });
 InstitutionSchema.plugin(mongoosePaginate);
 

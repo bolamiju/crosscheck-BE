@@ -7,7 +7,7 @@ const addInstitution = async (req, res) => {
 
     if (error) {
       return res.status(422).json({
-        message: error.details[0].message,
+        message: error.details[0].message
       });
     }
 
@@ -20,7 +20,7 @@ const addInstitution = async (req, res) => {
     if (institutionExist) {
       return res.status(409).json({
         status: 409,
-        message: "institution already exist",
+        message: "institution already exist"
       });
     }
 
@@ -29,40 +29,41 @@ const addInstitution = async (req, res) => {
       amount,
       state,
       country,
-      category,
+      category
     });
 
     await doc.save();
 
     return res.status(201).json({
       message: "Institution added successfuly",
-      institution: doc,
+      institution: doc
     });
   } catch (error) {
     return res.status(500).json({
       status: 500,
-      error: `${error.message}` || "Something went wrong",
+      error: `${error.message}` || "Something went wrong"
     });
   }
 };
 
 const getAllInstitutions = (req, res) => {
+  const { offset } = req.params;
   try {
-    Institution.find({}, (err, institution) => {
+    Institution.paginate({}, { offset, limit: 20 }, (err, institution) => {
       if (institution.length === 0) {
         return res.status(404).json({
-          message: "no institution found",
+          message: "no institution found"
         });
       }
-
+      // console.log("all institutions", institution);
       return res.status(200).json({
-        message: `${institution.length} institution(s) found`,
-        institution,
+        message: `${institution.docs.length} institution(s) found`,
+        institution
       });
     });
   } catch (error) {
     return res.status(500).json({
-      error: error.message || "Something went wrong",
+      error: error.message || "Something went wrong"
     });
   }
 };
@@ -72,36 +73,30 @@ const editInstitutionInfo = async (req, res) => {
   const { name } = req.params;
   console.log("params", req.params);
   try {
-    const institution = await Institution.findOne(
-      { name },
-      function (err, result) {
-        if (!result) {
-          return res.send(404).json({
-            message: "Institution not found",
-          });
-        }
+    const institution = await Institution.findOne({ name }, function (err, result) {
+      if (!result) {
+        return res.send(404).json({
+          message: "Institution not found"
+        });
       }
-    );
+    });
 
     if (!institution) {
       return res.status(404).json({
-        message: "Institution not found",
+        message: "Institution not found"
       });
     }
     console.log(institution);
-    const updatedInstitution = await Institution.updateOne(
-      { name },
-      { $set: updateparamters }
-    );
+    const updatedInstitution = await Institution.updateOne({ name }, { $set: updateparamters });
     if (updatedInstitution) {
       return res.status(200).json({
         message: "Institution updated",
-        university: updatedInstitution,
+        university: updatedInstitution
       });
     }
   } catch (error) {
     return res.status(500).json({
-      error: error.message || "Something went wrong",
+      error: error.message || "Something went wrong"
     });
   }
 };
@@ -112,25 +107,25 @@ const deleteInstitution = (req, res) => {
   Institution.findOne({ _id }, (err, institution) => {
     if (err) {
       return res.status(500).json({
-        message: err,
+        message: err
       });
     }
     if (!institution) {
       return res.status(404).json({
-        message: "institution not found",
+        message: "institution not found"
       });
     }
 
     Institution.deleteOne({ _id }, (error, result) => {
       if (error) {
         return res.status(500).json({
-          message: error,
+          message: error
         });
       }
 
       if (result) {
         return res.status(200).json({
-          message: "institution deleted successfully",
+          message: "institution deleted successfully"
         });
       }
     });
@@ -143,18 +138,18 @@ const getInstitutionByCountry = (req, res) => {
     Institution.find({ country }, (err, institution) => {
       if (institution.length === 0) {
         return res.status(404).json({
-          message: "no institution found",
+          message: "no institution found"
         });
       }
 
       return res.status(200).json({
         message: `${institution.length} institution(s) found`,
-        institution,
+        institution
       });
     });
   } catch (error) {
     return res.status(500).json({
-      error: error.message || "Something went wrong",
+      error: error.message || "Something went wrong"
     });
   }
 };
@@ -164,5 +159,5 @@ module.exports = {
   getAllInstitutions,
   editInstitutionInfo,
   deleteInstitution,
-  getInstitutionByCountry,
+  getInstitutionByCountry
 };
