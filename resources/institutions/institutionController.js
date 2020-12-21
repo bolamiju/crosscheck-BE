@@ -47,15 +47,19 @@ const addInstitution = async (req, res) => {
 };
 
 const getAllInstitutions = (req, res) => {
-  const { offset } = req.params;
+  const { offset, limit, name } = req.params;
   try {
-    Institution.paginate({}, { offset, limit: 20 }, (err, institution) => {
+    const options = {
+      offset: parseInt(offset),
+      limit: parseInt(limit)
+    };
+    Institution.paginate({ name: new RegExp(name, "i") }, options, (err, institution) => {
       if (institution.length === 0) {
         return res.status(404).json({
           message: "no institution found"
         });
       }
-      // console.log("all institutions", institution);
+
       return res.status(200).json({
         message: `${institution.docs.length} institution(s) found`,
         institution
