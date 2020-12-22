@@ -173,7 +173,7 @@ const getInstitutionByCountryandName = (req, res) => {
       limit: parseInt(limit)
     };
     Institution.paginate(
-      { country: new RegExp(country, "i"), name },
+      { country: new RegExp(country, "i"), name: new RegExp(name, "i") },
       options,
       (err, institution) => {
         if (institution.length === 0) {
