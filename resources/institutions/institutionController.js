@@ -137,9 +137,14 @@ const deleteInstitution = (req, res) => {
 };
 
 const getInstitutionByCountry = (req, res) => {
-  const { country } = req.params;
+  const { offset, limit, country } = req.params;
+
   try {
-    Institution.find({ country }, (err, institution) => {
+    const options = {
+      offset: parseInt(offset),
+      limit: parseInt(limit)
+    };
+    Institution.paginate({ country: new RegExp(country, "i") }, options, (err, institution) => {
       if (institution.length === 0) {
         return res.status(404).json({
           message: "no institution found"
@@ -147,10 +152,42 @@ const getInstitutionByCountry = (req, res) => {
       }
 
       return res.status(200).json({
-        message: `${institution.length} institution(s) found`,
+        message: `${institution.docs.length} institution(s) found`,
         institution
       });
     });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong"
+    });
+  }
+};
+
+const getInstitutionByCountryandName = (req, res) => {
+  const { offset, limit, country } = req.params;
+  const { name } = req.body;
+
+  try {
+    const options = {
+      offset: parseInt(offset),
+      limit: parseInt(limit)
+    };
+    Institution.paginate(
+      { country: new RegExp(country, "i"), name },
+      options,
+      (err, institution) => {
+        if (institution.length === 0) {
+          return res.status(404).json({
+            message: "no institution found"
+          });
+        }
+
+        return res.status(200).json({
+          message: `${institution.docs.length} institution(s) found`,
+          institution
+        });
+      }
+    );
   } catch (error) {
     return res.status(500).json({
       error: error.message || "Something went wrong"
@@ -163,5 +200,6 @@ module.exports = {
   getAllInstitutions,
   editInstitutionInfo,
   deleteInstitution,
-  getInstitutionByCountry
+  getInstitutionByCountry,
+  getInstitutionByCountryandName
 };
