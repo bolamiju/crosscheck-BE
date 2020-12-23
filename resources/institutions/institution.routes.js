@@ -17,7 +17,7 @@ const {
 router.post("/add", addInstitution);
 router.get("/:name/:offset/:limit", getAllInstitutions);
 router.get("/country/:country/:offset/:limit", getInstitutionByCountry);
-router.get("/countryandName/:country/:offset/:limit", getInstitutionByCountryandName);
+router.get("/countryandName/:country/:name/:offset/:limit", getInstitutionByCountryandName);
 router.put("/name/:name", verifyToken, validateAdmin, editInstitutionInfo);
 router.delete("/:_id", verifyToken, validateAdmin, deleteInstitution);
 

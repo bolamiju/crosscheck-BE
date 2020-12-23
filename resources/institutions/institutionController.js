@@ -164,9 +164,9 @@ const getInstitutionByCountry = (req, res) => {
 };
 
 const getInstitutionByCountryandName = (req, res) => {
-  const { offset, limit, country } = req.params;
-  const { name } = req.body;
+  const { offset, limit, country, name } = req.params;
 
+  console.log("NAME", name);
   try {
     const options = {
       offset: parseInt(offset),
