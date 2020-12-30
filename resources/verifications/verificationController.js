@@ -202,7 +202,6 @@ const updateVerification = async (req, res) => {
             res.send(error);
           } else {
             console.log("sent");
-          
           }
         });
       }
