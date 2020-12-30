@@ -28,7 +28,6 @@ const requestVerification = async (req, res) => {
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const year = today.getFullYear();
     const date = `${year}-${month}-${day}`;
-    console.log("file", req.file);
     const verification = new Verification({
       id,
       firstName,
@@ -154,7 +153,8 @@ const getVerificationsByStatus = (req, res) => {
 const updateVerification = async (req, res) => {
   const { id, email } = req.params;
   const { verificationStatus } = req.body;
-  console.log("params", req.params);
+ const proof =  req.file.path.replace(/\\/g, "/"),
+
   try {
     await Verification.findOne({ _id: id }, function (err, result) {
       if (!result) {
@@ -166,7 +166,7 @@ const updateVerification = async (req, res) => {
 
     const updateVerification = await Verification.updateOne(
       { _id: id },
-      { $set: { status: verificationStatus } }
+      { $set: { status: verificationStatus, proof } }
     );
 
     if (updateVerification) {
@@ -179,6 +179,32 @@ const updateVerification = async (req, res) => {
         });
 
         await doc.save();
+        const transporter = nodemailer.createTransport(
+          nodeMailerSendgrid({
+            apiKey: process.env.SENDGRID_API_KEY,
+          })
+        );
+    
+        const mailOptions = {
+          from: "takere@trapezoidlimited.com",
+          to: `${email}`,
+          subject: "Verification completed",
+          html: `
+          <div>Hi, <br> Your verification request has been completed. Attached to this email is a proof of completion</div> `,
+          attachments: [{
+            path: proof
+        }]
+        };
+    
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log("error");
+            res.send(error);
+          } else {
+            console.log("sent");
+          
+          }
+        });
       }
 
       return res.status(200).json({
