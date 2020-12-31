@@ -153,7 +153,7 @@ const getVerificationsByStatus = (req, res) => {
 const updateVerification = async (req, res) => {
   const { id, email } = req.params;
   const { verificationStatus } = req.body;
-  const proof = req.file.path.replace(/\\/g, "/");
+  // const proof = req.file.path.replace(/\\/g, "/");
 
   try {
     await Verification.findOne({ _id: id }, function (err, result) {
@@ -166,7 +166,7 @@ const updateVerification = async (req, res) => {
 
     const updateVerification = await Verification.updateOne(
       { _id: id },
-      { $set: { status: verificationStatus, proof } }
+      { $set: { status: verificationStatus } }
     );
 
     if (updateVerification) {
