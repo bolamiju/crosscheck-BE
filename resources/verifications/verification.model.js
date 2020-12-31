@@ -34,7 +34,13 @@ const verificationSchema = Schema({
     minlength: 2,
     maxlength: 50
   },
-  amount: {
+  institute_charge: {
+    type: Number,
+    required: true,
+    minlength: 4,
+    maxlength: 80
+  },
+  our_charge: {
     type: Number,
     required: true,
     minlength: 4,
