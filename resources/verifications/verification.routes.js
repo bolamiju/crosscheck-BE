@@ -64,6 +64,6 @@ const {
 router.post("/request", upload.single("certImage"), requestVerification);
 router.get("/byemail/:email", getUserVerifications);
 router.get("/status/:status", getVerificationsByStatus);
-router.put("/:id/:email", upload.single("proof"), updateVerification);
+router.put("/:id/:email", updateVerification);
 
 module.exports = router;
