@@ -13,7 +13,7 @@ module.exports = async () => {
     await mongoose.connect(connectionUrl, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      dbName: 'crosscheck'
+      dbName: 'Crosscheck'
     });
     console.log("Connected to Database");
   } catch (e) {
