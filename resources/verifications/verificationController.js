@@ -23,6 +23,7 @@ const requestVerification = async (req, res) => {
       our_charge,
       email
     } = req.body;
+    const {tranId} = req.params
 
     const today = new Date();
     const day = String(today.getDate()).padStart(2, "0");
@@ -47,7 +48,8 @@ const requestVerification = async (req, res) => {
       email,
       institute_charge,
       our_charge,
-      certImage: req.file.path.replace(/\\/g, "/")
+      certImage: req.file.path.replace(/\\/g, "/"),
+      tranId
     });
 
     await verification.save();

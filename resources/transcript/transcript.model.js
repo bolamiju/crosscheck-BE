@@ -92,8 +92,6 @@ const TranscriptSchema = Schema({
   },
   tranId:{
     type:Number,
-    minlength:2,
-    maxlength:20
   }
 });
 

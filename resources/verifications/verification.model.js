@@ -93,7 +93,10 @@ const verificationSchema = Schema({
     maxlength: 20
   },
   certImage: { type: String },
-  proof: { type: String }
+  proof: { type: String },
+  tranId:{
+    type:Number,
+  }
 });
 
 const verificationModel = mongoose.model("Verification", verificationSchema);
