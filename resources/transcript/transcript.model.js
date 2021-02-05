@@ -90,6 +90,11 @@ const TranscriptSchema = Schema({
     minlength: 2,
     maxlength: 20,
   },
+  tranId:{
+    type:Number,
+    minlength:2,
+    maxlength:20
+  }
 });
 
 const TranscriptModel = mongoose.model("Transcript", TranscriptSchema);
