@@ -143,6 +143,7 @@ const getUserTranscripts = (req, res) => {
 const updateTranscript = async (req, res) => {
   const { transcriptId,email } = req.params;
   const { transcriptStatus } = req.body;
+  console.log(req.params,transcriptStatus)
 
   try {
     await Transcript.findOne(
@@ -158,7 +159,7 @@ const updateTranscript = async (req, res) => {
           { $set: { status: transcriptStatus } }
         );
         if (updateTranscript) {
-          if (verificationStatus === "completed") {
+          if (transcriptStatus === "completed") {
             const transporter = nodemailer.createTransport(
               nodeMailerSendgrid({
                 apiKey: process.env.SENDGRID_API_KEY
