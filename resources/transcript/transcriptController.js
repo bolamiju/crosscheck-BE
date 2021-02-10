@@ -1,6 +1,7 @@
 const Transcript = require("./transcript.model");
 const nodemailer = require("nodemailer");
 const nodeMailerSendgrid = require("nodemailer-sendgrid");
+const Message = require("../messages/message.model");
 
 const requestTranscript = async (req, res) => {
   try {
@@ -171,7 +172,7 @@ const updateTranscript = async (req, res) => {
               to: `${email}`,
               subject: "Verification completed",
               html: `
-              <div>Hi, <br> Your verification request has been completed. Attached to this email is a proof of completion</div> `
+              <div>Hi, <br> Your transcript request with id ${transcriptId} has been completed. Please refer to your dashboard for proof of completion</div> `,
               // attachments: [
               //   {
               //     path: proof
@@ -188,9 +189,9 @@ const updateTranscript = async (req, res) => {
               }
             });
             const doc = new Message({
-              id,
+              id:transcriptId,
               message: `Your transcript request with id ${transcriptId} has been completed`,
-              subject: "Verification completed",
+              subject: "Transcript request completed",
               receiver: email,
             });
 

@@ -186,12 +186,12 @@ const updateVerification = async (req, res) => {
           to: `${email}`,
           subject: "Verification completed",
           html: `
-          <div>Hi, <br> Your verification request has been completed. Attached to this email is a proof of completion</div> `
-          // attachments: [
-          //   {
-          //     path: proof
-          //   }
-          // ]
+          <div>Hi, <br> Your verification request has been completed. Attached to this email is a proof of completion</div> `,
+          attachments: [
+            {
+              path: proof
+            }
+          ]
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
