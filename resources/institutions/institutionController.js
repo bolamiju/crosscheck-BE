@@ -13,7 +13,7 @@ const addInstitution = async (req, res) => {
 
     // const { userId } = req;
 
-    let { name, amount, state, country, category } = req.body;
+    let { name, country, our_charge,institute_charge,transcript_fee } = req.body;
 
     const institutionExist = await Institution.findOne({ name });
 
@@ -26,10 +26,8 @@ const addInstitution = async (req, res) => {
 
     const doc = new Institution({
       name,
-      amount,
-      state,
+      our_charge,institute_charge,transcript_fee,
       country,
-      category
     });
 
     await doc.save();
