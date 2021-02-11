@@ -3,13 +3,13 @@ const validation = require("./institution.validation");
 
 const addInstitution = async (req, res) => {
   try {
-    const { error } = validation.validateInstitution(req.body);
+    // const { error } = validation.validateInstitution(req.body);
 
-    if (error) {
-      return res.status(422).json({
-        message: error.details[0].message
-      });
-    }
+    // if (error) {
+    //   return res.status(422).json({
+    //     message: error.details[0].message
+    //   });
+    // }
 
     // const { userId } = req;
 
