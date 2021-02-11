@@ -20,7 +20,7 @@ const addInstitution = async (req, res) => {
     if (institutionExist) {
       return res.status(409).json({
         status: 409,
-        message: "institution already exist"
+        message: `${name} already exist`
       });
     }
 
