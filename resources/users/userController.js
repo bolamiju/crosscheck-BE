@@ -70,12 +70,12 @@ const register = async (req, res) => {
     );
 
     const mailOptions = {
-      from: "takere@trapezoidlimited.com",
+      from: "support@crosscheck.africa",
       to: `${email}`,
       subject: "Account activation",
       html: `
       <div>Hi ${firstName}, <br> Please click on
-      <a href="https://crosschek.netlify.app/verify/${email}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
+      <a href="https://crosscheck.africa/verify/${email}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
