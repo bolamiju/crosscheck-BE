@@ -2,12 +2,13 @@ const Message = require("./message.model");
 
 const sendMessage = async (req, res) => {
   try {
-    let { id, message, subject } = req.body;
+    let { id, message, subject,date } = req.body;
 
     const doc = new Message({
       id,
       message,
       subject,
+      date
     });
 
     await doc.save();
