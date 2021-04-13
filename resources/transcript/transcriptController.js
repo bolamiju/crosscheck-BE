@@ -55,7 +55,7 @@ const requestTranscript = async (req, res) => {
     );
 
     const adminMail = {
-      from: "takere@trapezoidlimited.com",
+      from: "support@crosscheck.africa",
       to: "tolaked@yahoo.com",
       subject: "New Order",
       html: `
@@ -71,11 +71,11 @@ const requestTranscript = async (req, res) => {
     });
 
     const mailOptions = {
-      from: "takere@trapezoidlimited.com",
+      from: "support@crosscheck.africa",
       to: `${email}`,
       subject: "Order Received",
       html: `
-      <div>Hi ${firstName}, <br> We have receieved your transcript order with id ${id} for ${institution}  </div> `,
+      <div>Hi ${firstName}, <br> We have received your transcript order with id ${id} for ${institution}  </div> `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {

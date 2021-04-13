@@ -61,7 +61,7 @@ const requestVerification = async (req, res) => {
     );
 
     const adminMail = {
-      from: "takere@trapezoidlimited.com",
+      from: "support@crosscheck.africa",
       to: "tolaked@yahoo.com",
       subject: "New Order",
       html: `
@@ -77,11 +77,11 @@ const requestVerification = async (req, res) => {
     });
 
     const mailOptions = {
-      from: "takere@trapezoidlimited.com",
+      from: "support@crosscheck.africa",
       to: `${email}`,
       subject: "Order Received",
       html: `
-      <div>Hi ${firstName}, <br> We have receieved your education verification order for ${institution}  with id ${id}</div> `
+      <div>Hi ${firstName}, <br> We have received your education verification order for ${institution}  with id ${id}</div> `
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -182,7 +182,7 @@ const updateVerification = async (req, res) => {
         );
 
         const mailOptions = {
-          from: "takere@trapezoidlimited.com",
+          from: "support@crosscheck.africa",
           to: `${email}`,
           subject: "Verification completed",
           html: `
