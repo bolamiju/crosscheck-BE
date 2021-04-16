@@ -56,7 +56,7 @@ const requestTranscript = async (req, res) => {
 
     const adminMail = {
       from: "support@crosscheck.africa",
-      to: "tolaked@yahoo.com",
+      to: "support@crosscheck.africa",
       subject: "New Order",
       html: `
       <div>Hi , <br>There is a new transcript order for ${institution}  </div> `,
