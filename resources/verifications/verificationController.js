@@ -62,10 +62,10 @@ const requestVerification = async (req, res) => {
 
     const adminMail = {
       from: "support@crosscheck.africa",
-      to: "tolaked@yahoo.com",
+      to: "support@crosscheck.africa",
       subject: "New Order",
       html: `
-      <div>Hi , <br>There is a new order for ${institution}  </div> `
+      <div>Hi , <br>There is a new order for ${institution}. Please check dashboard  </div> `
     };
 
     transporter.sendMail(adminMail, (error, info) => {

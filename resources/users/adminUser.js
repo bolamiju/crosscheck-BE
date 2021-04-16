@@ -64,7 +64,7 @@ const registerAdmin = async (req, res) => {
     );
 
     const mailOptions = {
-      from: "takere@trapezoidlimited.com",
+      from: "support@crosscheck.africa",
       to: `${email}`,
       subject: "Account activation",
       html: `
@@ -196,7 +196,7 @@ const forgotPassword = async (req, res) => {
       );
       console.log("gene", generatedToken);
       const mailOptions = {
-        from: "takere@trapezoidlimited.com",
+        from: "support@crosscheck.africa",
         to: `${email}`,
         subject: "Password Reset",
         html: `

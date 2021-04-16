@@ -168,7 +168,7 @@ const updateTranscript = async (req, res) => {
             );
     
             const mailOptions = {
-              from: "takere@trapezoidlimited.com",
+              from: "support@crosscheck.africa",
               to: `${email}`,
               subject: "Verification completed",
               html: `
