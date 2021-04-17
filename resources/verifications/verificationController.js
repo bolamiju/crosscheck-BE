@@ -24,6 +24,7 @@ const requestVerification = async (req, res) => {
       email
     } = req.body;
     const {tranId} = req.params
+    const name = `${firstName} ${lastName}`
 
     const today = new Date();
     const day = String(today.getDate()).padStart(2, "0");
@@ -34,6 +35,7 @@ const requestVerification = async (req, res) => {
       id,
       firstName,
       lastName,
+      name,
       middleName,
       dateOfBirth,
       studentId,

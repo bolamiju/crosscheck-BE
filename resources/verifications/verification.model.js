@@ -17,6 +17,11 @@ const verificationSchema = Schema({
     minlength: 2,
     maxlength: 50
   },
+  name:{
+    type: String,
+    minlength: 2,
+    maxlength: 50
+  },
   email: {
     type: String,
     required: true,

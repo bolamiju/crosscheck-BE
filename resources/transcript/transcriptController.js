@@ -29,10 +29,13 @@ const requestTranscript = async (req, res) => {
     const year = today.getFullYear();
     const date = `${year}-${month}-${day}`;
 
+    const name = `${firstName} ${lastName}`
+
     const transcript = new Transcript({
       id,
       firstName,
       lastName,
+      name,
       course,
       graduationYear,
       institution,
