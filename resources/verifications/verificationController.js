@@ -155,7 +155,11 @@ const getVerificationsByStatus = (req, res) => {
 };
 
 const updateVerification = async (req, res) => {
-
+ const today = new Date();
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const year = today.getFullYear();
+    const date = `${year}-${month}-${day}`;
   const { id, email } = req.params;
   const { verificationStatus } = req.body;
   let proof;
@@ -206,6 +210,7 @@ const updateVerification = async (req, res) => {
           id,
           message: `Your verification with id ${id} has been completed`,
           subject: "Verification completed",
+          date,
           receiver: email
         });
 
