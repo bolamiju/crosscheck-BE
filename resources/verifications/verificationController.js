@@ -74,7 +74,7 @@ const requestVerification = async (req, res) => {
       if (error) {
         res.send(error);
       } else {
-        console.log("sent");
+       res.send("sent")
       }
     });
 
@@ -88,10 +88,8 @@ const requestVerification = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log("error");
         res.send(error);
       } else {
-        console.log("sent");
         return res.status(201).json({
           message: "Request submitted"
         });
@@ -167,7 +165,6 @@ const updateVerification = async (req, res) => {
   try {
     await Verification.findOne({ id: id }, function (err, result) {
       if (!result) {
-        console.log('kosi jor')
         return res.status(404).json({
           message: "verification not found"
         });
@@ -200,7 +197,6 @@ const updateVerification = async (req, res) => {
 
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            console.log("error");
             res.send(error);
           } else {
             console.log("sent");
