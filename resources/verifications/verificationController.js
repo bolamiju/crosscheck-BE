@@ -157,6 +157,7 @@ const getVerificationsByStatus = (req, res) => {
 };
 
 const updateVerification = async (req, res) => {
+
   const { id, email } = req.params;
   const { verificationStatus } = req.body;
   let proof;
@@ -164,19 +165,18 @@ const updateVerification = async (req, res) => {
   proof = req.file.path.replace(/\\/g, "/");
   }
   try {
-    await Verification.findOne({ _id: id }, function (err, result) {
+    await Verification.findOne({ id: id }, function (err, result) {
       if (!result) {
-        return res.sendStatus(404).json({
+        console.log('kosi jor')
+        return res.status(404).json({
           message: "verification not found"
         });
       }
     });
-
     const updateVerification = await Verification.updateOne(
-      { _id: id },
+      { id: id },
       { $set: { status: verificationStatus, proof: proof } }
     );
-
     if (updateVerification) {
       if (verificationStatus === "completed") {
         const transporter = nodemailer.createTransport(
