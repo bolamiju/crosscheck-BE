@@ -45,6 +45,12 @@ const verificationSchema = Schema({
     minlength: 4,
     maxlength: 80
   },
+  id: {
+    type: String,
+    required: true,
+    minlength: 4,
+    maxlength: 80
+  },
   our_charge: {
     type: Number,
     required: true,

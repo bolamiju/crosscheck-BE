@@ -159,8 +159,10 @@ const getVerificationsByStatus = (req, res) => {
 const updateVerification = async (req, res) => {
   const { id, email } = req.params;
   const { verificationStatus } = req.body;
-  const proof = req.file.path.replace(/\\/g, "/");
-
+  let proof;
+  if(verificationStatus === "completed"){
+  proof = req.file.path.replace(/\\/g, "/");
+  }
   try {
     await Verification.findOne({ _id: id }, function (err, result) {
       if (!result) {

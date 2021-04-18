@@ -14,6 +14,12 @@ const TranscriptSchema = Schema({
     minlength: 2,
     maxlength: 50,
   },
+  id: {
+    type: String,
+    required: true,
+    minlength: 4,
+    maxlength: 80
+  },
   name:{
     type: String,
     required: true,
