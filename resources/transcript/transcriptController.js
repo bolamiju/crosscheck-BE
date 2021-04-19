@@ -147,7 +147,6 @@ const getUserTranscripts = (req, res) => {
 const updateTranscript = async (req, res) => {
   const { transcriptId,email } = req.params;
   const { transcriptStatus } = req.body;
-  console.log(req.params,transcriptStatus)
 
   try {
     await Transcript.findOne(

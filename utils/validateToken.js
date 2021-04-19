@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const UserModel = require("../resources/users/users.model");
+const AdminModel = require("../resources/Admin/admin.model");
 
 const verifyToken = async (req, res, next) => {
   const token = req.headers.authorization;
@@ -11,11 +11,17 @@ const verifyToken = async (req, res, next) => {
   try {
     const { id } = await jwt.verify(token, process.env.SECRET_KEY);
 
-    const user = await UserModel.findOne({ _id: id });
+    const user = await AdminModel.findOne({ _id: id });
 
     if (!user) {
       return res.status(401).json({
         message: "invalid token provided",
+      });
+    }
+
+      if(user.userType !== "super_admin"){
+       return res.status(401).json({
+        message: "super admin feature only",
       });
     }
 
@@ -45,6 +51,8 @@ const accountActivationToken = async (req, res, next) => {
         message: "invalid token provided",
       });
     }
+
+  
 
     req.userId = id;
     return next();

@@ -59,7 +59,6 @@ const editRate = async (req, res) => {
           message: "rate not found"
         });
       }
-      console.log(institution);
       const updatedRate = await Rate.updateOne({ currency:'USD' }, { $set: currency_rate });
       if (updatedRate) {
         return res.status(200).json({

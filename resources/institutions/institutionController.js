@@ -75,7 +75,6 @@ const getAllInstitutions = (req, res) => {
 const editInstitutionInfo = async (req, res) => {
   const updateparamters = req.body;
   const { name } = req.params;
-  console.log("params", req.params);
   try {
     const institution = await Institution.findOne({ name }, function (err, result) {
       if (!result) {
@@ -90,7 +89,6 @@ const editInstitutionInfo = async (req, res) => {
         message: "Institution not found"
       });
     }
-    console.log(institution);
     const updatedInstitution = await Institution.updateOne({ name }, { $set: updateparamters });
     if (updatedInstitution) {
       return res.status(200).json({
@@ -107,7 +105,6 @@ const editInstitutionInfo = async (req, res) => {
 
 const deleteInstitution = (req, res) => {
   const { _id } = req.params;
-  console.log(_id);
   Institution.findOne({ _id }, (err, institution) => {
     if (err) {
       return res.status(500).json({
@@ -166,7 +163,6 @@ const getInstitutionByCountry = (req, res) => {
 const getInstitutionByCountryandName = (req, res) => {
   const { offset, limit, country, name } = req.params;
 
-  console.log("NAME", name);
   try {
     const options = {
       offset: parseInt(offset),

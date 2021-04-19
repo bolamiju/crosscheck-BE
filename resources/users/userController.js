@@ -97,7 +97,6 @@ const register = async (req, res) => {
 
 const verifyAccount = async (req, res) => {
   const { email } = req.params;
-  console.log("email", email);
   try {
     await Users.findOne({ email }, function (err, result) {
       if (!result) {
@@ -105,7 +104,6 @@ const verifyAccount = async (req, res) => {
           message: "user not found",
         });
       }
-      console.log(result);
     });
 
     const confirmUser = await Users.updateOne(
@@ -180,7 +178,6 @@ const forgotPassword = async (req, res) => {
   const generatedToken = v4();
   try {
     Users.findOne({ email }, function (err, user) {
-      console.log("see user", user);
       if (!user) {
         return res.status(404).json({
           message: "user not found",
@@ -200,7 +197,6 @@ const forgotPassword = async (req, res) => {
           apiKey: process.env.SENDGRID_API_KEY,
         })
       );
-      console.log("gene", generatedToken);
       const mailOptions = {
         from: "support@crosscheck.africa",
         to: `${email}`,
@@ -273,7 +269,6 @@ const resetPassword = async (req, res) => {
 };
 
 const googleLogin = (req, res) => {
-  console.log("hitted");
   const { tokenId } = req.body;
 
   client
@@ -293,7 +288,6 @@ const googleLogin = (req, res) => {
           }
 
           if (!user) {
-            console.log("not found o");
             return res.status(404).json({
               message: "No account associated with this google account",
             });
@@ -351,6 +345,8 @@ const facebookLogin = (req, res) => {
       }
     });
 };
+
+
 module.exports = {
   register,
   login,
