@@ -117,7 +117,120 @@ const login = async (req, res) => {
   }
 };
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const generatedToken = v4();
+  try {
+    Admin.findOne({ email }, function (err, user) {
+      if (!user) {
+        return res.status(404).json({
+          message: "user not found",
+        });
+      }
+
+      user.resetPasswordToken = generatedToken; 
+      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+      user.save();
+
+      const transporter = nodemailer.createTransport(
+        nodeMailerSendgrid({
+          apiKey: process.env.SENDGRID_API_KEY,
+        })
+      );
+      const mailOptions = {
+        from: "support@crosscheck.africa",
+        to: `${email}`,
+        subject: "Password Reset",
+        html: `
+            <div>Someone (hopefully you) has requested a password reset for your crosscheck account. Follow the link below to set a new password:<br><br>
+            <a href="https://admincrosscheck.netlify.app/reset/${generatedToken}" rel="nofollow" target="_blank">https://admincrosscheck.netlify.app/reset/${generatedToken}</a><br>
+
+           <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p><br>
+          
+           </div> `,
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          res.status(404).json({ message: error });
+        } else {
+          return res.status(200).json({
+            message: "A password reset token has been sent to your email",
+          });
+        }
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "Could not login user",
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword, confirmPassword } = req.body;
+  try {
+    await Admin.findOne(
+      {
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() },
+      },
+      function (err, user) {
+        if (!user) {
+          return res.status(404).json({
+            message: "Password reset token is invalid or has expired.",
+          });
+        }
+
+        if (newPassword !== confirmPassword) {
+          return res.status(404).json({
+            message: "password do not match",
+          });
+        }
+        const salt = genSaltSync(10);
+        const hash = hashSync(newPassword, salt);
+        user.password = hash;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        user.save();
+        return res.status(200).json({
+          message: "Password changed successfully",
+        });
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong",
+    });
+  }
+};
+
+const getAdmins = (req, res) => {
+  const { status } = req.params;
+
+  try {
+    Admin.find({ userType:"admin" }, (err, admins) => {
+      if (admins.length === 0) {
+        return res.status(404).json({
+          message: "no admin found"
+        });
+      }
+
+      return res.status(200).json({
+        message: `${admin.length} admin(s) found`,
+        admins
+      });
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message || "Something went wrong"
+    });
+  }
+};
 
 module.exports = {
-    createAdmin, login
+    createAdmin, login, forgotPassword, resetPassword, getAdmins
 }

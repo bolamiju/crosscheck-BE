@@ -204,7 +204,7 @@ const forgotPassword = async (req, res) => {
         html: `
             <div>Someone (hopefully you) has requested a password reset for your crosscheck account. Follow the link below to set a new password:<br><br>
             <a href="https://crosschek.netlify.app/reset/${generatedToken}" rel="nofollow" target="_blank">https://crosschek.netlify.app/reset/${generatedToken}</a><br>
-
+            <p>Please note that this link expires in an hour.
            <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p><br>
            <p>CrossCheck Team</p>
            <a href="https://crosschek.netlify.app rel="nofollow" target="_blank"" >https://crocheck.com</a>
