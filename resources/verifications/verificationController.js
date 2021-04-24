@@ -185,8 +185,8 @@ const updateVerification = async (req, res) => {
     const year = today.getFullYear();
     const date = `${year}-${month}-${day}`;
   const { id, email } = req.params;
-  const {updated_by} = req.body
-  const { verificationStatus } = req.body;
+  const { verificationStatus, updated_by } = req.body;
+  console.log(req.body)
   let school;
   let name;
   let requester;

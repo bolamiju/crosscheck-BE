@@ -109,6 +109,11 @@ const verificationSchema = Schema({
     maxlength: 80,
     default: "pending"
   },
+  updated_by: {
+    type: String,
+    minlength: 2,
+    maxlength: 80,
+  },
   date: {
     type: String,
     minlength: 2,
