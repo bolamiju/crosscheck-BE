@@ -20,6 +20,17 @@ const TranscriptSchema = Schema({
     minlength: 4,
     maxlength: 80
   },
+  updated_by:{
+    type: String,
+    minlength: 4,
+    maxlength: 80
+  },
+  requester: {
+    type: String,
+    required: true,
+    minlength: 4,
+    maxlength: 80
+  },
   name:{
     type: String,
     required: true,

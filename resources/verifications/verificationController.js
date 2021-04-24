@@ -21,6 +21,7 @@ const requestVerification = async (req, res) => {
       institution,
       institute_charge,
       our_charge,
+      requester,
       email
     } = req.body;
     const {tranId} = req.params
@@ -50,6 +51,7 @@ const requestVerification = async (req, res) => {
       email,
       institute_charge,
       our_charge,
+      requester,
       certImage: req.file.path.replace(/\\/g, "/"),
       tranId
     });
@@ -67,7 +69,16 @@ const requestVerification = async (req, res) => {
       to: "support@crosscheck.africa",
       subject: "New Order",
       html: `
-      <div>Hi , <br>There is a new order for ${institution}. Please check dashboard  </div> `
+     
+      <div style="background:#F3F2ED;width:800px; padding:40px 30px 40px 20px">
+      <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
+          <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
+          <p>Hi, <br>There is a new order for ${institution}. Please check your <a href="https://admincrosscheck.netlify.app/dashboard">dashboard</a> for details </p> 
+
+          <p>Best Regards, <br/> The CrossCheck Team</p>
+          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+          </div>
+          </div>`
     };
 
     transporter.sendMail(adminMail, (error, info) => {
@@ -83,12 +94,25 @@ const requestVerification = async (req, res) => {
       to: `${email}`,
       subject: "Order Received",
       html: `
-      <div>Hi ${firstName}, <br> We have received your education verification order for ${institution}  with id ${id}</div> `
+      <div style="background:#F3F2ED;width:800px; padding:40px 30px 40px 20px">
+      <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
+          <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
+          <p>Hi, ${requester}</p>
+          <p style="line-height: 30px; font-family:sans-serif;>We have received your education verification request for</p>
+
+          <strong>${firstName} ${lastName}</strong>
+          <p>Ladoke Akintola University of Technology</p>
+          <p><strong>Request Id</strong>:${id}</p>
+          <br/><br/>
+          <p>Best Regards, <br/> The CrossCheck Team</p>
+          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+      </div>
+  </div>`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        res.send(error);
+       return res.send(error);
       } else {
         return res.status(201).json({
           message: "Request submitted"
@@ -161,7 +185,11 @@ const updateVerification = async (req, res) => {
     const year = today.getFullYear();
     const date = `${year}-${month}-${day}`;
   const { id, email } = req.params;
+  const {updated_by} = req.body
   const { verificationStatus } = req.body;
+  let school;
+  let name;
+  let requester;
   let proof;
   if(verificationStatus === "completed"){
   proof = req.file.path.replace(/\\/g, "/");
@@ -173,10 +201,16 @@ const updateVerification = async (req, res) => {
           message: "verification not found"
         });
       }
+      else{
+        school = result.institution;
+        name = result.firstName + " " + result.lastName;
+        requester = result.requester
+      }
+      
     });
     const updateVerification = await Verification.updateOne(
       { id: id },
-      { $set: { status: verificationStatus, proof: proof } }
+      { $set: { status: verificationStatus, proof: proof, updated_by } }
     );
     if (updateVerification) {
       if (verificationStatus === "completed") {
@@ -191,12 +225,24 @@ const updateVerification = async (req, res) => {
           to: `${email}`,
           subject: "Verification completed",
           html: `
-          <div>Hi, <br> Your verification request has been completed. Attached to this email is a proof of completion</div> `,
-          attachments: [
-            {
-              path: proof
-            }
-          ]
+          <div style="background:#F3F2ED;width:800px; padding:40px 30px 40px 20px">
+          <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
+              <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
+              <p>Hi, ${requester}</p>
+              <p style="line-height: 30px; font-family:sans-serif;line-height: normal">The following verification request has been completed.</p> <br/>
+
+              <strong>${name}</strong>
+              <p>${school}</p>
+              <p>Please login to view the result of your verification</p>
+              <button style="background:#0092e0; padding:10px 20px; border:1px solid #0092e0; border-radius:5px;color:white; font-weight:bold; outline:none; cursor:pointer"><a href="https://crosscheck.africa/login" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; color:white">View Verification </a></button><br/><br/>
+              <br/><br/>
+              <p>Best Regards, <br/> The CrossCheck Team</p>
+              <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+          </div>
+      </div> 
+          
+          `,
+          
         };
 
         transporter.sendMail(mailOptions, (error, info) => {

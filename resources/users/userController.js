@@ -74,8 +74,18 @@ const register = async (req, res) => {
       to: `${email}`,
       subject: "Account activation",
       html: `
-      <div>Hi ${firstName}, <br> Please click on
-      <a href="https://crosscheck.africa/verify/${email}" rel="nofollow" target="_blank">this link</a> to complete registration </div> `,
+      <div style="background:#F3F2ED; width:800px; padding:40px 30px 40px 20px">
+      <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
+          <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
+      <p>Hi ${firstName},<p/> <br> 
+      <strong style="font-family:'sans-serif; line-height:30px"> Thank you for creating an account on CrossCheck</strong>
+      <p>Please click the button below to verify your email address</p>
+     <button style="background:#0092e0; padding:10px 20px; border:1px solid #0092e0; border-radius:5px; color:white; font-weight:bold"> <a href="https://crosscheck.africa/verify/${email}" rel="​noopener noreferrer" target="_blank" style="text-decoration:none; color:white">Verify Email</a>  </button> 
+     
+     <p>Best Regards, <br/> The CrossCheck Team</p>
+     <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+     </div>
+     </div>`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -175,6 +185,7 @@ const login = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
+  console.log('email',email)
   const generatedToken = v4();
   try {
     Users.findOne({ email }, function (err, user) {
@@ -201,14 +212,26 @@ const forgotPassword = async (req, res) => {
         from: "support@crosscheck.africa",
         to: `${email}`,
         subject: "Password Reset",
-        html: `
-            <div>Someone (hopefully you) has requested a password reset for your crosscheck account. Follow the link below to set a new password:<br><br>
-            <a href="https://crosschek.netlify.app/reset/${generatedToken}" rel="nofollow" target="_blank">https://crosschek.netlify.app/reset/${generatedToken}</a><br>
-            <p>Please note that this link expires in an hour.
-           <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p><br>
-           <p>CrossCheck Team</p>
-           <a href="https://crosschek.netlify.app rel="nofollow" target="_blank"" >https://crocheck.com</a>
-           </div> `,
+        html: `<div style="background:#F3F2ED; width:800px; padding:40px 30px 40px 20px">
+        <div style="background:white; border-radius:10px; width:600px; padding:25px; margin:0 auto">
+        
+            <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
+            <p>Hi ${user.firstName},
+            <p>Someone (hopefully you) has requested a password reset for your crosscheck account. 
+           <br/><br/>
+           <strong>Please click the button below to reset your password</strong><br/><br/>
+
+           <button style="background:#0092e0; padding:10px 20px; border:1px solid #0092e0; border-radius:5px;color:white; font-weight:bold; outline:none; cursor:pointer"><a href="https://crosscheck.africa/reset/${generatedToken}" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; color:white">Reset Password </a></button><br/><br/>
+               
+           <strong>Please note that this link expires within an hour of receipt of this email.</strong>
+           <br/><br/>
+     <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p>
+     <br/><br/>
+     <p>Best Regards, <br/> The CrossCheck Team</p>
+           <a href="https://crosscheck.africa.app rel="​noopener noreferrer" target="_blank"" >www.crosscheck.africa</a>
+           </div> 
+           </div>
+           </div>`,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {

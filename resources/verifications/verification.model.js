@@ -51,6 +51,17 @@ const verificationSchema = Schema({
     minlength: 4,
     maxlength: 80
   },
+  requester: {
+    type: String,
+    required: true,
+    minlength: 4,
+    maxlength: 80
+  },
+  modified_by:{
+    type: String,
+    minlength: 4,
+    maxlength: 80
+  },
   our_charge: {
     type: Number,
     required: true,
