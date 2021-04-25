@@ -28,6 +28,11 @@ const MessageSchema = Schema({
     maxlength: 80,
     default: "unread",
   },
+  dateTime: {
+    type: String,
+    minlength: 2,
+    maxlength: 80,
+  },
   receiver: {
     type: String,
     minlength: 2,

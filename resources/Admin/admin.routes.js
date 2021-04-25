@@ -9,7 +9,7 @@ const { createAdmin, login, forgotPassword, resetPassword, getAdmins, removeAdmi
 router.post("/register",verifyToken, createAdmin);
 router.post("/login", login);
 router.post("/forgotpassword", forgotPassword);
-router.post("/resetpassword/:token", resetPassword);
+router.put("/resetpassword/:token", resetPassword);
 router.get("/", getAdmins);
 router.delete("/:_id",  removeAdmin);
 

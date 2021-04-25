@@ -144,7 +144,7 @@ const forgotPassword = async (req, res) => {
            <br/><br/>
            <strong>Please click the button below to reset your password</strong><br/><br/>
 
-           <button style="background:#0092e0; padding:10px 20px; border:1px solid #0092e0; border-radius:5px;color:white; font-weight:bold; outline:none; cursor:pointer"><a href="https://crosscheck.africa/reset/${generatedToken}" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; color:white">Reset Password </a></button><br/><br/>
+           <button style="background:#0092e0; padding:10px 20px; border:1px solid #0092e0; border-radius:5px;color:white; font-weight:bold; outline:none; cursor:pointer"><a href="https://admincrosscheck.netlify.app/resetpassword/${generatedToken}" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; color:white">Reset Password </a></button><br/><br/>
                
            <strong>Please note that this link expires within an hour of receipt of this email.</strong>
            <br/><br/>
