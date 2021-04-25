@@ -47,10 +47,16 @@ const createAdmin = async (req, res) => {
       to: `${email}`,
       subject: "Account activation",
       html: `
-      <div>Hi ${firstName}, <br> you have been created as an admin.
-      You can access the admin dashboard with details below <br>
+      <div style="background:#F3F2ED; width:800px; padding:40px 30px 40px 20px">
+      <div style="background:white; border-radius:10px; width:600px; padding:25px; margin:0 auto">
+      
+          <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
+      <p>Hi ${firstName},</p> <br>
+      <p> you have been created as an admin.
+      You can access the admin dashboard with details below</p> <br>
       Email: ${email} <br>
-      Password: ${password}</div> `
+      Password: ${password}</div> 
+      </div>`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -129,12 +135,27 @@ const forgotPassword = async (req, res) => {
         to: `${email}`,
         subject: "Password Reset",
         html: `
-            <div>Someone (hopefully you) has requested a password reset for your crosscheck account. Follow the link below to set a new password:<br><br>
-            <a href="https://admincrosscheck.netlify.app/reset/${generatedToken}" rel="nofollow" target="_blank">https://admincrosscheck.netlify.app/reset/${generatedToken}</a><br>
+        <div style="background:#F3F2ED; width:800px; padding:40px 30px 40px 20px">
+        <div style="background:white; border-radius:10px; width:600px; padding:25px; margin:0 auto">
+        
+            <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
+            <p>Hi ${user.firstName},
+            <p>Someone (hopefully you) has requested a password reset for your crosscheck account. 
+           <br/><br/>
+           <strong>Please click the button below to reset your password</strong><br/><br/>
 
-           <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p><br>
-          
-           </div> `
+           <button style="background:#0092e0; padding:10px 20px; border:1px solid #0092e0; border-radius:5px;color:white; font-weight:bold; outline:none; cursor:pointer"><a href="https://crosscheck.africa/reset/${generatedToken}" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; color:white">Reset Password </a></button><br/><br/>
+               
+           <strong>Please note that this link expires within an hour of receipt of this email.</strong>
+           <br/><br/>
+     <p>If you don't wish to reset your password, disregard this email and no action will be taken.</p>
+     <br/><br/>
+     <p>Best Regards, <br/> The CrossCheck Team</p>
+           <a href="https://crosscheck.africa.app rel="​noopener noreferrer" target="_blank"" >www.crosscheck.africa</a>
+           </div> 
+           </div>
+           </div>
+            `
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
