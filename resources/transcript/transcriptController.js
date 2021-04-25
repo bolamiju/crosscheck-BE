@@ -164,10 +164,6 @@ const updateTranscript = async (req, res) => {
   const { transcriptStatus,updated_by } = req.body;
 
   const today = new Date();
-  const day = String(today.getDate()).padStart(2, "0");
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const year = today.getFullYear();
-  const date = `${year}-${month}-${day}`
 
   try {
     await Transcript.findOne(
@@ -226,7 +222,6 @@ const updateTranscript = async (req, res) => {
               message: `Your transcript request with id ${transcriptId} has been completed`,
               subject: "Transcript request completed",
               receiver: email,
-              date,
               dateTime: today
             });
 

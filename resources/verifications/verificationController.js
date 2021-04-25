@@ -27,11 +27,11 @@ const requestVerification = async (req, res) => {
     const {tranId} = req.params
     const name = `${firstName} ${lastName}`
 
-    const date = new Date();
-    // const day = String(today.getDate()).padStart(2, "0");
-    // const month = String(today.getMonth() + 1).padStart(2, "0");
-    // const year = today.getFullYear();
-    // const date = `${year}-${month}-${day}`;
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const year = today.getFullYear();
+    const date = `${year}-${month}-${day}`;
     const verification = new Verification({
       id,
       firstName,
@@ -179,11 +179,7 @@ const getVerificationsByStatus = (req, res) => {
 };
 
 const updateVerification = async (req, res) => {
- const date = new Date();
-    // const day = String(today.getDate()).padStart(2, "0");
-    // const month = String(today.getMonth() + 1).padStart(2, "0");
-    // const year = today.getFullYear();
-    // const date = `${year}-${month}-${day}`;
+ const today = new Date();
   const { id, email } = req.params;
   const { verificationStatus, updated_by } = req.body;
   let school;
@@ -255,7 +251,7 @@ const updateVerification = async (req, res) => {
           id,
           message: `Your verification with id ${id} has been completed`,
           subject: "Verification completed",
-          date,
+          dateTime,
           receiver: email
         });
 

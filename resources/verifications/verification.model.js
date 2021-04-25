@@ -57,7 +57,7 @@ const verificationSchema = Schema({
     minlength: 4,
     maxlength: 80
   },
-  modified_by:{
+  updated_by:{
     type: String,
     minlength: 4,
     maxlength: 80
@@ -115,6 +115,11 @@ const verificationSchema = Schema({
     maxlength: 80,
   },
   date: {
+    type: String,
+    minlength: 2,
+    maxlength: 20
+  },
+  dateTime: {
     type: String,
     minlength: 2,
     maxlength: 20

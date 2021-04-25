@@ -39,11 +39,6 @@ const MessageSchema = Schema({
     maxlength: 80,
     default: "N/A",
   },
-  date: {
-    type: String,
-    minlength: 2,
-    maxlength: 20
-  }
 });
 
 const MessageModel = mongoose.model("Message", MessageSchema);

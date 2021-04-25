@@ -8,7 +8,7 @@ const sendMessage = async (req, res) => {
       id,
       message,
       subject,
-      date
+      dateTime
     });
 
     await doc.save();
