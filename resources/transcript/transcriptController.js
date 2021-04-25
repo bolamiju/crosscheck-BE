@@ -83,7 +83,7 @@ const requestTranscript = async (req, res) => {
       <div style="background:#F3F2ED;width:800px; padding:40px 30px 40px 20px">
       <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
           <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
-          <p>Hi, ${requester}</p>
+          <p>Hi ${requester},</p>
           <p style="line-height: 30px; font-family:sans-serif;line-height: normal">We have received your trancript request for</p> <br/>
 
           <strong>${firstName} ${lastName}</strong>
@@ -194,7 +194,7 @@ const updateTranscript = async (req, res) => {
               <div style="background:#F3F2ED; width:800px; padding:40px 30px 40px 20px">
               <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
                   <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
-                  <p>Hi, ${result.requester}</p>
+                  <p>Hi ${result.requester},</p>
                   <p style="line-height: 30px; font-family:sans-serif;line-height: normal">The following transcript request has been completed.</p> <br/>
 
                   <strong>${result.firstName} ${result.lastName}</strong>

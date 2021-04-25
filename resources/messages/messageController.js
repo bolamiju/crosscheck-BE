@@ -2,7 +2,7 @@ const Message = require("./message.model");
 
 const sendMessage = async (req, res) => {
   try {
-    let { id, message, subject,date } = req.body;
+    let { id, message, subject,dateTime } = req.body;
 
     const doc = new Message({
       id,
