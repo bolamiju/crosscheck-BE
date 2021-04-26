@@ -91,7 +91,7 @@ const requestTranscript = async (req, res) => {
           <p><strong>Request Id</strong>:${id}</p>
           <br/><br/>
           <p>Best Regards, <br/> The CrossCheck Team</p>
-          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'none', cursor:'pointer'}}>www.crosscheck.africa</a></p>
       </div>
   </div> `,
     };
@@ -203,7 +203,7 @@ const updateTranscript = async (req, res) => {
                   <button style="background:#0092e0; padding:10px 20px; border:1px solid #0092e0; border-radius:5px;color:white; font-weight:bold; outline:none; cursor:pointer"><a href="https://crosscheck.africa/login" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; color:white">View Verification </a></button><br/><br/>
                   <br/><br/>
                   <p>Best Regards, <br/> The CrossCheck Team</p>
-                  <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p
+                  <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; cursor:pointer">www.crosscheck.africa</a></p
               </div>
           </div>`,
              
