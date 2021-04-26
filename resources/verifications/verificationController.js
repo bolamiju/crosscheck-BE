@@ -76,7 +76,7 @@ const requestVerification = async (req, res) => {
           <p>Hi, <br>There is a new order for ${institution}. Please check your <a href="https://admincrosscheck.netlify.app/dashboard">dashboard</a> for details </p> 
 
           <p>Best Regards, <br/> The CrossCheck Team</p>
-          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style="text-decoration:underline; cursor:pointer">www.crosscheck.africa</a></p>
           </div>
           </div>`
     };
@@ -101,11 +101,11 @@ const requestVerification = async (req, res) => {
           <p style="line-height: 30px; font-family:sans-serif">We have received your education verification request for</p>
 
           <strong>${firstName} ${lastName}</strong>
-          <p>Ladoke Akintola University of Technology</p>
+          <p>${institution}</p>
           <p><strong>Request Id</strong>: ${id}</p>
           <br/><br/>
-          <p>Best Regards, <br/> The CrossCheck Team</p>
-          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+          <p>Best Regards <br/> The CrossCheck Team</p>
+          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; cursor:pointer">www.crosscheck.africa</a></p>
       </div>
   </div>`
     };
@@ -232,7 +232,7 @@ const updateVerification = async (req, res) => {
               <button style="background:#0092e0; padding:10px 20px; border:1px solid #0092e0; border-radius:5px;color:white; font-weight:bold; outline:none; cursor:pointer"><a href="https://crosscheck.africa/login" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; color:white">View Verification </a></button><br/><br/>
               <br/><br/>
               <p>Best Regards, <br/> The CrossCheck Team</p>
-              <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+              <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; cursor:pointer">www.crosscheck.africa</a></p>
           </div>
       </div> 
           
