@@ -63,8 +63,19 @@ const requestTranscript = async (req, res) => {
       from: "support@crosscheck.africa",
       to: "support@crosscheck.africa",
       subject: "New Order",
-      html: `
-      <div>Hi , <br>There is a new transcript order for ${institution}  </div> `,
+      html: ` <div style="background:#F3F2ED;width:800px; padding:40px 30px 40px 20px">
+      <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
+          <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
+      <p>Hi  <br>There is a new transcript order for. Please check your dashboard for details </p> 
+
+      <strong>${firstName} ${lastName}</strong>
+      <p>${institution}</p>
+      <p><strong>Request Id</strong>: ${id}</p>
+      <br/><br/>
+      <p>Best Regards, <br/> The CrossCheck Team</p>
+      <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; cursor:pointer">www.crosscheck.africa</a></p>
+      </div>
+      </div>`,
     };
 
     transporter.sendMail(adminMail, (error, info) => {
@@ -88,10 +99,10 @@ const requestTranscript = async (req, res) => {
 
           <strong>${firstName} ${lastName}</strong>
           <p>${institution}</p>
-          <p><strong>Request Id</strong>:${id}</p>
+          <p><strong>Request Id</strong>: ${id}</p>
           <br/><br/>
           <p>Best Regards, <br/> The CrossCheck Team</p>
-          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'none', cursor:'pointer'}}>www.crosscheck.africa</a></p>
+          <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; cursor:pointer">www.crosscheck.africa</a></p>
       </div>
   </div> `,
     };

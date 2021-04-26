@@ -94,15 +94,15 @@ const requestVerification = async (req, res) => {
       to: `${email}`,
       subject: "Order Received",
       html: `
-      <div style="background:#F3F2ED;width:800px; padding:40px 30px 40px 20px">
+      <div style="background:#F3F2ED; width:800px; padding:40px 30px 40px 20px">
       <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
           <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
-          <p>Hi, ${requester}</p>
-          <p style="line-height: 30px; font-family:sans-serif;>We have received your education verification request for</p>
+          <p>Hi ${requester},</p>
+          <p style="line-height: 30px; font-family:sans-serif">We have received your education verification request for</p>
 
           <strong>${firstName} ${lastName}</strong>
           <p>Ladoke Akintola University of Technology</p>
-          <p><strong>Request Id</strong>:${id}</p>
+          <p><strong>Request Id</strong>: ${id}</p>
           <br/><br/>
           <p>Best Regards, <br/> The CrossCheck Team</p>
           <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style={{textDecoration:'underline', cursor:'pointer'}}>www.crosscheck.africa</a></p>
@@ -222,8 +222,8 @@ const updateVerification = async (req, res) => {
           html: `
           <div style="background:#F3F2ED;width:800px; padding:40px 30px 40px 20px">
           <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
-              <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%;margin:20px 40px"/>
-              <p>Hi, ${requester}</p>
+              <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%; margin:20px 40px"/>
+              <p>Hi ${requester},</p>
               <p style="line-height: 30px; font-family:sans-serif;line-height: normal">The following verification request has been completed.</p> <br/>
 
               <strong>${name}</strong>
