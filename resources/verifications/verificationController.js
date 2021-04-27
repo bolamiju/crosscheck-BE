@@ -251,7 +251,7 @@ const updateVerification = async (req, res) => {
           id,
           message: `Your verification with id ${id} has been completed`,
           subject: "Verification completed",
-          dateTime,
+          dateTime: today,
           receiver: email
         });
 
