@@ -24,8 +24,8 @@ const requestVerification = async (req, res) => {
       requester,
       email
     } = req.body;
-    const {tranId} = req.params
-    const name = `${firstName} ${lastName}`
+    const { tranId } = req.params;
+    const name = `${firstName} ${lastName}`;
 
     const today = new Date();
     const day = String(today.getDate()).padStart(2, "0");
@@ -85,7 +85,7 @@ const requestVerification = async (req, res) => {
       if (error) {
         res.send(error);
       } else {
-       res.send("sent")
+        res.send("sent");
       }
     });
 
@@ -112,7 +112,7 @@ const requestVerification = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-       return res.send(error);
+        return res.send(error);
       } else {
         return res.status(201).json({
           message: "Request submitted"
@@ -179,15 +179,15 @@ const getVerificationsByStatus = (req, res) => {
 };
 
 const updateVerification = async (req, res) => {
- const today = new Date();
+  const today = new Date();
   const { id, email } = req.params;
   const { verificationStatus, updated_by } = req.body;
   let school;
   let name;
   let requester;
   let proof;
-  if(verificationStatus === "completed"){
-  proof = req.file.path.replace(/\\/g, "/");
+  if (verificationStatus === "completed") {
+    proof = req.file.path.replace(/\\/g, "/");
   }
   try {
     await Verification.findOne({ id: id }, function (err, result) {
@@ -195,13 +195,11 @@ const updateVerification = async (req, res) => {
         return res.status(404).json({
           message: "verification not found"
         });
-      }
-      else{
+      } else {
         school = result.institution;
         name = result.firstName + " " + result.lastName;
-        requester = result.requester
+        requester = result.requester;
       }
-      
     });
     const updateVerification = await Verification.updateOne(
       { id: id },
@@ -236,8 +234,7 @@ const updateVerification = async (req, res) => {
           </div>
       </div> 
           
-          `,
-          
+          `
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -270,9 +267,66 @@ const updateVerification = async (req, res) => {
   }
 };
 
+const sendEmail = (req, res) => {
+  const { email, requester } = req.params;
+  const { message, subject, institution, name, id } = req.body;
+  try{
+  if (!message) {
+    return res.status(404).json({
+      message: "message body cannot be empty"
+    });
+  }
+
+  const transporter = nodemailer.createTransport(
+    nodeMailerSendgrid({
+      apiKey: process.env.SENDGRID_API_KEY
+    })
+  );
+
+  const mailOptions = {
+    from: "support@crosscheck.africa",
+    to: `${email}`,
+    subject: `${subject}`,
+    html: `
+    <div style="background:#F3F2ED;width:800px; padding:40px 30px 40px 20px">
+    <div style="background:white; border-radius:10px; width:600px; padding:15px; margin:0 auto">
+        <img src="https://i.ibb.co/b6YjKTx/Cross-Check-Logo.png" alt="crosscheck-logo" style="width:75%; margin:20px 40px"/>
+        <p>Hi ${requester},</p>
+        <p style="line-height: 30px; font-family:sans-serif;line-height: normal"> ${message} </p>
+        <br/>
+        <strong> ${institution} </strong>
+        <p> ${name} </p>
+        <p> Request Id: ${id} </p>
+
+        <p>Best Regards, <br/> The CrossCheck Team</p>
+        <p><a href="https://crosscheck.africa" target="_blank" rel="​noopener noreferrer" style="text-decoration:none; cursor:pointer">www.crosscheck.africa</a></p>
+    </div>
+</div> 
+    
+    `
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      res.send(error);
+    } else {
+      return res.status(200).json({
+        message: "Email sent"
+      });
+    }
+  });
+}
+catch(error){
+  return res.status(500).json({
+    error: error.message || "Something went wrong"
+  });
+}
+};
+
 module.exports = {
   requestVerification,
   getUserVerifications,
   getVerificationsByStatus,
-  updateVerification
+  updateVerification,
+  sendEmail
 };

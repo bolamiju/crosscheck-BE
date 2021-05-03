@@ -32,11 +32,12 @@ const {
   requestVerification,
   getUserVerifications,
   getVerificationsByStatus,
-  updateVerification
+  updateVerification, sendEmail
 } = require("./verificationController");
 
 router.post("/request/:tranId", upload.single("certImage"), requestVerification);
 router.get("/byemail/:email", getUserVerifications);
+router.post("/sendemail/:email/:requester",sendEmail)
 router.get("/status/:status", getVerificationsByStatus);
 router.put("/:id/:email", upload.single("proof"), updateVerification);
 
