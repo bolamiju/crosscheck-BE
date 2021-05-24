@@ -17,6 +17,8 @@ const Auth = {
   generateToken(user) {
     const payload = {
       id: user._id,
+      paymentId: user.paymentId
+
     };
 
     const options = {

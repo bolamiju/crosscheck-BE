@@ -34,7 +34,7 @@ const register = async (req, res) => {
       companyWebsite,
       accountType,
     } = req.body;
-
+    const paymentId = v4()
     const userExist = await Users.findOne({ email });
 
     if (userExist) {
@@ -58,6 +58,7 @@ const register = async (req, res) => {
       companyWebsite,
       accountType,
       userType,
+      paymentId,
       password: hash,
     });
 
@@ -185,7 +186,6 @@ const login = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
-  console.log('email',email)
   const generatedToken = v4();
   try {
     Users.findOne({ email }, function (err, user) {

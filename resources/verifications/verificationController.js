@@ -2,6 +2,8 @@ const Verification = require("./verification.model");
 const nodemailer = require("nodemailer");
 const nodeMailerSendgrid = require("nodemailer-sendgrid");
 const Message = require("../messages/message.model");
+const Users = require("../users/users.model");
+const { v4 } = require("uuid");
 
 const requestVerification = async (req, res) => {
   try {
@@ -24,7 +26,7 @@ const requestVerification = async (req, res) => {
       requester,
       email
     } = req.body;
-    const { tranId } = req.params;
+    const { paymentId, tranId } = req.params;
     const name = `${firstName} ${lastName}`;
 
     const today = new Date();
@@ -32,6 +34,15 @@ const requestVerification = async (req, res) => {
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const year = today.getFullYear();
     const date = `${year}-${month}-${day}`;
+
+    const userInfo = await Users.findOne({ email });
+    const userPaymentId = userInfo.paymentId
+    if( userPaymentId !== paymentId){
+      return res.status(400).send({
+        message: "Invalid payment ID",
+      });
+    }
+
     const verification = new Verification({
       id,
       firstName,
@@ -53,10 +64,16 @@ const requestVerification = async (req, res) => {
       our_charge,
       requester,
       certImage: req.file.path.replace(/\\/g, "/"),
-      tranId
+      tranId,
+      
     });
 
     await verification.save();
+
+    await Users.updateOne(
+      { email: email },
+      { $set: { paymentId: v4() } }
+    );
 
     const transporter = nodemailer.createTransport(
       nodeMailerSendgrid({

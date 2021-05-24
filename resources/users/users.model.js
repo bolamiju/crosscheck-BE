@@ -67,6 +67,12 @@ const UserSchema = Schema({
     minlength: 8,
     maxlength: 50,
   },
+  paymentId: {
+    type: String,
+    required: false,
+    minlength: 8,
+    maxlength: 50,
+  },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });
