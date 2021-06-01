@@ -2,8 +2,6 @@ const Transcript = require("./transcript.model");
 const nodemailer = require("nodemailer");
 const nodeMailerSendgrid = require("nodemailer-sendgrid");
 const Message = require("../messages/message.model");
-const Users = require("../users/users.model");
-const { v4 } = require("uuid");
 
 const requestTranscript = async (req, res) => {
   try {
@@ -24,7 +22,7 @@ const requestTranscript = async (req, res) => {
       requester,
       email,
     } = req.body;
-    const { paymentId,tranId } = req.params
+    const { tranId } = req.params
 
     const today = new Date();
     const day = String(today.getDate()).padStart(2, "0");
@@ -34,13 +32,7 @@ const requestTranscript = async (req, res) => {
 
     const name = `${firstName} ${lastName}`
 
-    const userInfo = await Users.findOne({ email });
-    const userPaymentId = userInfo.paymentId
-    if( userPaymentId !== paymentId){
-      return res.status(400).send({
-        message: "Invalid payment ID",
-      });
-    }
+   
 
     const transcript = new Transcript({
       id,
