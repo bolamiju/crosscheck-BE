@@ -38,7 +38,6 @@ const UserSchema = Schema({
     required: true,
     minlength: 7,
     maxlength: 50,
-    unique: true,
   },
   userType: {
     type: String,
