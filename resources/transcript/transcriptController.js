@@ -22,7 +22,7 @@ const requestTranscript = async (req, res) => {
       requester,
       email,
     } = req.body;
-    const { tranId } = req.params
+    // const { tranId } = req.params
 
     const today = new Date();
     const day = String(today.getDate()).padStart(2, "0");
@@ -51,8 +51,7 @@ const requestTranscript = async (req, res) => {
       amount,
       email,
       date,
-      requester,
-      tranId
+      requester
     });
     await transcript.save();
     const transporter = nodemailer.createTransport(

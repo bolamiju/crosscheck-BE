@@ -24,7 +24,7 @@ const requestVerification = async (req, res) => {
       requester,
       email
     } = req.body;
-    const { tranId } = req.params;
+    // const { tranId } = req.params;
     const name = `${firstName} ${lastName}`;
 
     const today = new Date();
@@ -61,8 +61,7 @@ const requestVerification = async (req, res) => {
       institute_charge,
       our_charge,
       requester,
-      certImage: req.file.path.replace(/\\/g, "/"),
-      tranId,
+      certImage: req.file.path.replace(/\\/g, "/")
       
     });
 
