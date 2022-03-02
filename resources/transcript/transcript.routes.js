@@ -8,7 +8,7 @@ const {
   updateTranscript,
 } = require("./transcriptController");
 
-router.post("/request/:tranId", requestTranscript);
+router.post("/request", requestTranscript);
 router.get("/byemail/:email", getUserTranscripts);
 router.get("/status/:status", getTranscriptByStatus);
 router.put("/:transcriptId/:email", updateTranscript);
