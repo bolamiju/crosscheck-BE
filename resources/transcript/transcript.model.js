@@ -28,7 +28,7 @@ const TranscriptSchema = Schema({
   requester: {
     type: String,
     required: true,
-    minlength: 4,
+    minlength: 1,
     maxlength: 80
   },
   name:{
